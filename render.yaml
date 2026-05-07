@@ -8,6 +8,10 @@ services:
     startCommand: gunicorn app:app
     envVars:
       - key: SECRET_KEY
-        sync: false          # تُدخل قيمتها مرّة واحدة في Render Dashboard
+        sync: false
       - key: FLASK_ENV
-        value: production    # قيمة ثابتة - لا سرّ فيها
+        value: production
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false

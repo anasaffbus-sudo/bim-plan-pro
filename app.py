@@ -11,7 +11,9 @@ import hashlib
 import secrets
 from datetime import datetime
 from functools import wraps
-from flask import Flask, request, jsonify, session, send_from_directory, g
+from flask import Flask, request, jsonify, session, send_from_directory, g, redirect, url_for
+from werkzeug.middleware.proxy_fix import ProxyFix
+from authlib.integrations.flask_client import OAuth
 
 # ---------------------------------------------------------------------------
 # إعداد التطبيق
@@ -25,6 +27,10 @@ app = Flask(__name__, static_folder=BASE_DIR, static_url_path='')
 app.secret_key = os.environ.get('SECRET_KEY', 'bimplanpro-dev-key-do-not-use-in-production')
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SECURE'] = os.environ.get('FLASK_ENV') == 'production'
+
+# تطبيق ProxyFix للعمل خلف Render's load balancer (HTTPS)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # ---------------------------------------------------------------------------
 # قاعدة البيانات (SQLite)
@@ -53,11 +59,12 @@ def init_db():
         CREATE TABLE IF NOT EXISTS users (
             id              INTEGER PRIMARY KEY AUTOINCREMENT,
             email           TEXT    UNIQUE NOT NULL,
-            password_hash   TEXT    NOT NULL,
+            password_hash   TEXT    DEFAULT '',
             name            TEXT    DEFAULT '',
             company         TEXT    DEFAULT '',
             photo           TEXT    DEFAULT '',
             company_logo    TEXT    DEFAULT '',
+            provider        TEXT    DEFAULT 'password',
             created_at      TEXT    DEFAULT CURRENT_TIMESTAMP
         );
 
@@ -77,12 +84,30 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
     ''')
+    # Migration: add provider column to existing databases
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN provider TEXT DEFAULT 'password'")
+        db.commit()
+    except Exception:
+        pass  # العمود موجود مسبقاً
     db.commit()
     db.close()
 
 
 # تهيئة قاعدة البيانات عند بدء التطبيق
 init_db()
+
+# ---------------------------------------------------------------------------
+# إعداد Google OAuth
+# ---------------------------------------------------------------------------
+oauth = OAuth(app)
+google_oauth = oauth.register(
+    name='google',
+    client_id=os.environ.get('GOOGLE_CLIENT_ID', ''),
+    client_secret=os.environ.get('GOOGLE_CLIENT_SECRET', ''),
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs={'scope': 'openid email profile', 'prompt': 'select_account'}
+)
 
 # ---------------------------------------------------------------------------
 # المساعدات: كلمات المرور
@@ -169,8 +194,8 @@ def register():
 
     pw_hash = hash_password(password)
     cursor  = db.execute(
-        'INSERT INTO users (email, password_hash, name) VALUES (?, ?, ?)',
-        (email, pw_hash, name)
+        'INSERT INTO users (email, password_hash, name, provider) VALUES (?, ?, ?, ?)',
+        (email, pw_hash, name, 'password')
     )
     db.commit()
     user_id = cursor.lastrowid
@@ -191,6 +216,10 @@ def login():
     db   = get_db()
     user = db.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
 
+    # حساب Google لا يملك كلمة مرور
+    if user and not user['password_hash']:
+        return jsonify({'error': 'هذا الحساب مسجّل بحساب Google. يرجى الدخول عبر "تسجيل الدخول بحساب Google"'}), 401
+
     # رسالة موحدة لمنع تخمين وجود الحسابات (OWASP)
     if not user or not verify_password(password, user['password_hash']):
         return jsonify({'error': 'البريد الإلكتروني أو كلمة المرور غير صحيحة'}), 401
@@ -203,7 +232,7 @@ def login():
         'company':      user['company'],
         'photo':        user['photo'],
         'company_logo': user['company_logo'],
-        'provider':     'password'
+        'provider':     user['provider'] or 'password'
     })
 
 
@@ -228,7 +257,7 @@ def me():
         'company':      user['company'],
         'photo':        user['photo'],
         'company_logo': user['company_logo'],
-        'provider':     'password'
+        'provider':     user['provider'] or 'password'
     })
 
 
@@ -381,6 +410,57 @@ def save_settings():
         db.execute('INSERT INTO settings (user_id, data) VALUES (?,?)', (session['user_id'], json.dumps(data)))
     db.commit()
     return jsonify({'ok': True})
+
+# ---------------------------------------------------------------------------
+# Google OAuth مسارات
+# ---------------------------------------------------------------------------
+
+@app.route('/api/auth/google/login')
+def google_login():
+    if not os.environ.get('GOOGLE_CLIENT_ID'):
+        return '<h2>Google OAuth غير مُهيَّأ. أضف GOOGLE_CLIENT_ID و GOOGLE_CLIENT_SECRET في إعدادات Render.</h2>', 503
+    redirect_uri = url_for('google_callback', _external=True)
+    return google_oauth.authorize_redirect(redirect_uri)
+
+
+@app.route('/api/auth/google/callback')
+def google_callback():
+    try:
+        token     = google_oauth.authorize_access_token()
+        user_info = token.get('userinfo') or {}
+    except Exception:
+        return redirect('/?auth_error=google_failed')
+
+    email = (user_info.get('email') or '').strip().lower()
+    name  = user_info.get('name', '')
+    photo = user_info.get('picture', '')
+
+    if not email:
+        return redirect('/?auth_error=no_email')
+
+    db   = get_db()
+    user = db.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
+
+    if user:
+        # تحديث الصورة والمزوّد لحساب موجود
+        new_name = name if not user['name'] else user['name']
+        db.execute(
+            'UPDATE users SET photo=?, name=?, provider=? WHERE id=?',
+            (photo, new_name, 'google.com', user['id'])
+        )
+        db.commit()
+        user_id = user['id']
+    else:
+        cursor = db.execute(
+            'INSERT INTO users (email, password_hash, name, photo, provider) VALUES (?, ?, ?, ?, ?)',
+            (email, '', name, photo, 'google.com')
+        )
+        db.commit()
+        user_id = cursor.lastrowid
+
+    session['user_id'] = user_id
+    return redirect('/')
+
 
 # ---------------------------------------------------------------------------
 # تشغيل التطبيق

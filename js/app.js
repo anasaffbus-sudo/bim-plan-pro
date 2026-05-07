@@ -967,14 +967,8 @@ ${closingHTML}
     }
 
     function _handleGoogleSignIn() {
-        // Show the Google simulation form so user enters name + email
-        var simForm = document.getElementById('googleSimForm');
-        var formsContainer = document.getElementById('authFormsContainer');
-        if (simForm && formsContainer) {
-            formsContainer.classList.add('hidden');
-            simForm.classList.remove('hidden');
-            document.getElementById('googleSimName').focus();
-        }
+        // Redirect to Flask Google OAuth route
+        window.location.href = '/api/auth/google/login';
     }
 
     function _updateAuthButton(user) {
