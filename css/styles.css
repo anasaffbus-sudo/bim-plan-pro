@@ -4335,3 +4335,117 @@ html[dir="rtl"] .detail-value {
         text-align: center;
     }
 }
+
+/* ================================================
+   THEME TOGGLE BUTTON
+   ================================================ */
+.btn-theme {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-color);
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1rem;
+}
+.btn-theme:hover {
+    color: var(--text-primary);
+    border-color: var(--navy-300);
+    transform: translateY(-1px);
+}
+.landing-header .btn-theme {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+.landing-header .btn-theme:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* ================================================
+   DARK THEME OVERRIDES
+   ================================================ */
+:root[data-theme="dark"] {
+    --bg-primary: #0a1628;
+    --bg-card: #152d54;
+    --bg-sidebar: #050d1a;
+    --text-primary: #e8eaf0;
+    --text-secondary: #b0b5c3;
+    --text-muted: #8e93a3;
+    --border-color: #244f8f;
+    --gray-50: #1b3a68;
+    --gray-100: #244f8f;
+    --gray-200: #3a6db5;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.55);
+    --shadow-xl: 0 16px 50px rgba(0, 0, 0, 0.65);
+    --accent-green-light: rgba(16, 185, 129, 0.15);
+    --accent-orange-light: rgba(245, 158, 11, 0.15);
+    --accent-red-light: rgba(239, 68, 68, 0.15);
+    --accent-purple-light: rgba(139, 92, 246, 0.18);
+    --navy-50: #1b3a68;
+    --navy-100: #244f8f;
+}
+
+:root[data-theme="dark"] body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .topbar,
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .modal-content,
+:root[data-theme="dark"] .stat-card,
+:root[data-theme="dark"] .project-card,
+:root[data-theme="dark"] .feature-card,
+:root[data-theme="dark"] .preview-content,
+:root[data-theme="dark"] .wizard-card,
+:root[data-theme="dark"] .summary-card,
+:root[data-theme="dark"] .auth-card,
+:root[data-theme="dark"] .settings-card {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder {
+    color: var(--text-muted) !important;
+}
+
+:root[data-theme="dark"] .btn-secondary,
+:root[data-theme="dark"] .btn-outline {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .user-dropdown,
+:root[data-theme="dark"] .dropdown-menu {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme="dark"] .hero-mockup,
+:root[data-theme="dark"] .mockup-body {
+    background: rgba(255, 255, 255, 0.04);
+}
+

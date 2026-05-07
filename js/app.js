@@ -15,6 +15,7 @@ const App = (() => {
         _bindPreviewModal();
         _bindSettingsEvents();
         _bindLangToggle();
+        _bindThemeToggle();
         _bindAuthModal();
         _bindLanding();
     }
@@ -796,6 +797,33 @@ ${closingHTML}
                 navigateTo(currentPage);
             });
         }
+    }
+
+    function _applyThemeIcons(theme) {
+        var icons = document.querySelectorAll('#themeToggleBtn i, #landingThemeBtn i');
+        icons.forEach(function (i) {
+            i.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        });
+    }
+
+    function _setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        try { localStorage.setItem('bimplan_theme', theme); } catch (e) { }
+        _applyThemeIcons(theme);
+    }
+
+    function _bindThemeToggle() {
+        var current = document.documentElement.getAttribute('data-theme') || 'light';
+        _applyThemeIcons(current);
+        var ids = ['themeToggleBtn', 'landingThemeBtn'];
+        ids.forEach(function (id) {
+            var btn = document.getElementById(id);
+            if (!btn) return;
+            btn.addEventListener('click', function () {
+                var now = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                _setTheme(now);
+            });
+        });
     }
 
     function _bindAuthModal() {
