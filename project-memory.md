@@ -44,7 +44,9 @@
 ## Deployment
 - Platform: Render (Free tier)
 - Service name: bim-plan-pro
-- Live URL: https://bim-plan-pro.onrender.com  ← تُحدَّث بعد إتمام الربط
+- Live URL: https://bim-plan-pro.onrender.com  ✅ مؤكّد
+- Render Service ID: srv-d7u5s1dckfvc73ell9pg
+- GitHub Repo: https://github.com/anasaffbus-sudo/bim-plan-pro
 - Version: 1.0.0
 - Launch date: 2026-05-07
 - Branch: main
