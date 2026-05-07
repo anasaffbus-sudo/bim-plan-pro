@@ -34,3 +34,21 @@
 - js/i18n.js
 - js/storage.js
 - js/wizard.js
+
+## Backend (added 2026-05-07)
+- Flask + SQLite backend added (app.py + bimplan.db auto-created on first run).
+- Firebase replaced entirely by Flask API endpoints: /api/auth/*, /api/projects/*, /api/settings.
+- storage.js rewritten to use in-memory cache synced to Flask API.
+- firebase-auth.js rewritten to call Flask instead of Firebase.
+
+## Deployment
+- Platform: Render (Free tier)
+- Service name: bim-plan-pro
+- Live URL: https://bim-plan-pro.onrender.com  ← تُحدَّث بعد إتمام الربط
+- Version: 1.0.0
+- Launch date: 2026-05-07
+- Branch: main
+- Build command: pip install -r requirements.txt
+- Start command: gunicorn app:app
+- Env vars required in Render dashboard: SECRET_KEY
+- Git commit: 6de4af3 — Initial commit (22 files)
