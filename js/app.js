@@ -967,25 +967,14 @@ ${closingHTML}
     }
 
     function _handleGoogleSignIn() {
-        var authModal = document.getElementById('authModal');
-        if (!Auth.isFirebaseReady()) {
-            // Local mode: one-click Google demo session without manual inputs
-            Auth.signInWithGoogle().then(function () {
-                authModal.classList.remove('active');
-                _resetGoogleSimForm();
-            }).catch(function (err) {
-                var errEl = document.getElementById('loginError');
-                _showAuthError(errEl, _friendlyError(err));
-            });
-            return;
+        // Show the Google simulation form so user enters name + email
+        var simForm = document.getElementById('googleSimForm');
+        var formsContainer = document.getElementById('authFormsContainer');
+        if (simForm && formsContainer) {
+            formsContainer.classList.add('hidden');
+            simForm.classList.remove('hidden');
+            document.getElementById('googleSimName').focus();
         }
-        Auth.signInWithGoogle().then(function () {
-            authModal.classList.remove('active');
-        }).catch(function (err) {
-            if (err.code === 'auth/popup-closed-by-user') return;
-            var errEl = document.getElementById('loginError');
-            _showAuthError(errEl, _friendlyError(err));
-        });
     }
 
     function _updateAuthButton(user) {

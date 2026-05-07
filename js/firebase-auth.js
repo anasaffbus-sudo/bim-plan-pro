@@ -63,13 +63,14 @@ const Auth = (() => {
     //  (Flask لا يدعم OAuth مباشرة — يُستخدم نموذج بريد مبسّط)
     // ==========================================
     function signInWithGoogle(localName, localEmail) {
-        return _post('/api/auth/login', { email: localEmail, password: '_google_sim_' })
+        var GOOGLE_PW = '_google_oauth_sim_v1_';
+        return _post('/api/auth/login', { email: localEmail, password: GOOGLE_PW })
             .catch(function () {
-                // إذا لم يكن الحساب موجوداً، أنشئه تلقائياً
+                // الحساب غير موجود — أنشئه بكلمة مرور ثابتة ومحددة
                 return _post('/api/auth/register', {
                     email: localEmail,
-                    password: '_google_sim_' + Date.now(),
-                    name: localName || ''
+                    password: GOOGLE_PW,
+                    name: localName || localEmail.split('@')[0]
                 });
             })
             .then(function (user) {
