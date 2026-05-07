@@ -1,0 +1,40 @@
+# قاعدة البيانات (لا تُرفع - Render يعيد إنشاءها)
+bimplan.db
+data.db
+*.db
+*.sqlite3
+
+# متغيّرات البيئة السرّية
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# البيئة الافتراضية
+venv/
+.venv/
+env/
+ENV/
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# ملفات مؤقّتة
+*.log
+*.tmp

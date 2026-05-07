@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIM Plan Pro - مولد خطة تنفيذ BIM</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+    <script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
+</head>
+<body>
+    <!-- ====== Landing Page ====== -->
+    <div id="landingPage" class="landing-page">
+        <!-- Landing Header -->
+        <header class="landing-header">
+            <div class="landing-container">
+                <div class="landing-logo">
+                    <i class="fas fa-building"></i>
+                    <span>BIM Plan Pro</span>
+                </div>
+                <nav class="landing-nav">
+                    <button class="btn btn-lang" id="landingLangBtn" title="Switch Language">
+                        <i class="fas fa-globe"></i>
+                        <span>EN</span>
+                    </button>
+                    <button class="btn btn-primary btn-sm landing-cta-sm" id="landingStartBtnTop">
+                        <span data-i18n="landing_start">ابدأ الآن</span> <i class="fas fa-arrow-left"></i>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="landing-hero">
+            <div class="landing-container">
+                <div class="hero-content">
+                    <div class="hero-badge" data-i18n="landing_badge">مدعوم بالذكاء الاصطناعي</div>
+                    <h1 class="hero-title">
+                        <span data-i18n="landing_title_1">أنشئ خطة تنفيذ BIM</span><br>
+                        <span class="hero-gradient" data-i18n="landing_title_2">في دقائق، لا أسابيع</span>
+                    </h1>
+                    <p class="hero-desc" data-i18n="landing_desc">أداة ذكية تولّد خطة تنفيذ BIM احترافية متوافقة مع معيار ISO 19650 تلقائياً. أدخل بيانات مشروعك واحصل على مستند جاهز للتصدير.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" id="landingStartBtn">
+                            <i class="fas fa-rocket"></i> <span data-i18n="landing_start_free">ابدأ مجاناً</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-mockup">
+                        <div class="mockup-topbar">
+                            <span class="mockup-dot red"></span>
+                            <span class="mockup-dot yellow"></span>
+                            <span class="mockup-dot green"></span>
+                        </div>
+                        <div class="mockup-body">
+                            <div class="mockup-line w80"></div>
+                            <div class="mockup-line w60"></div>
+                            <div class="mockup-block">
+                                <i class="fas fa-file-alt"></i>
+                                <span>BIM Execution Plan</span>
+                            </div>
+                            <div class="mockup-row">
+                                <div class="mockup-tag"><i class="fas fa-check"></i> ISO 19650</div>
+                                <div class="mockup-tag accent"><i class="fas fa-bolt"></i> AI</div>
+                            </div>
+                            <div class="mockup-line w90"></div>
+                            <div class="mockup-line w45"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="landing-features">
+            <div class="landing-container">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 data-i18n="landing_feat1_title">توليد فوري</h3>
+                        <p data-i18n="landing_feat1_desc">خطة BEP كاملة تُنشأ في أقل من دقيقة واحدة بدلاً من أسابيع من العمل اليدوي.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon purple">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h3 data-i18n="landing_feat2_title">معيار ISO 19650</h3>
+                        <p data-i18n="landing_feat2_desc">جميع المخرجات متوافقة مع متطلبات معيار ISO 19650 لإدارة معلومات البناء.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon green">
+                            <i class="fas fa-file-export"></i>
+                        </div>
+                        <h3 data-i18n="landing_feat3_title">تصدير احترافي</h3>
+                        <p data-i18n="landing_feat3_desc">صدّر خطتك بصيغة PDF أو Word بتنسيق احترافي جاهز للتقديم.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon orange">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h3 data-i18n="landing_feat4_title">عربي وإنجليزي</h3>
+                        <p data-i18n="landing_feat4_desc">واجهة ومخرجات كاملة باللغتين العربية والإنجليزية مع دعم كامل لـ RTL.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="landing-footer">
+            <div class="landing-container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <i class="fas fa-building"></i>
+                        <span>BIM Plan Pro</span>
+                    </div>
+                    <p data-i18n="landing_footer">أداة مجانية لتوليد خطط تنفيذ BIM وفق معيار ISO 19650</p>
+                    <div class="footer-copy">&copy; 2026 BIM Plan Pro</div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ====== App (hidden initially) ====== -->
+    <aside class="sidebar" id="sidebar" style="display:none;">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-building"></i>
+                <span>BIM Plan Pro</span>
+            </div>
+            <p class="logo-subtitle">ISO 19650</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-th-large"></i>
+                <span data-i18n="nav_dashboard">لوحة التحكم</span>
+            </a>
+            <a href="#" class="nav-item" data-page="wizard">
+                <i class="fas fa-magic"></i>
+                <span data-i18n="nav_wizard">معالج الخطة الذكي</span>
+            </a>
+            <a href="#" class="nav-item" data-page="projects">
+                <i class="fas fa-folder-open"></i>
+                <span data-i18n="nav_projects">المشاريع</span>
+            </a>
+            <a href="#" class="nav-item" data-page="templates">
+                <i class="fas fa-file-alt"></i>
+                <span data-i18n="nav_templates">القوالب</span>
+            </a>
+            <a href="#" class="nav-item" data-page="guide">
+                <i class="fas fa-book-open"></i>
+                <span data-i18n="nav_guide">دليل ISO 19650</span>
+            </a>
+            <a href="#" class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i>
+                <span data-i18n="nav_settings">الإعدادات</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-back-home" id="backToLandingBtn">
+                <i class="fas fa-home"></i>
+                <span data-i18n="btn_back_home">الرئيسية</span>
+            </button>
+            <div class="iso-badge">
+                <i class="fas fa-certificate"></i>
+                <span data-i18n="iso_compliant_badge">متوافق مع ISO 19650</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent" style="display:none;">
+        <!-- Top Bar -->
+        <header class="topbar">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="topbar-title" id="pageTitle">
+                <h1 data-i18n="page_dashboard">لوحة التحكم</h1>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn btn-lang" id="langToggleBtn" title="Switch Language">
+                    <i class="fas fa-globe"></i>
+                    <span>EN</span>
+                </button>
+                <button class="btn btn-primary" id="newPlanBtn">
+                    <i class="fas fa-plus"></i>
+                    <span data-i18n="btn_new_plan">خطة جديدة</span>
+                </button>
+                <div class="topbar-user" id="topbarUser">
+                    <button class="btn btn-auth" id="authBtn">
+                        <i class="fas fa-user-circle"></i>
+                        <span data-i18n="btn_login">تسجيل الدخول</span>
+                    </button>
+                    <div class="user-dropdown hidden" id="userDropdown">
+                        <div class="user-dropdown-header" id="dropdownHeader">
+                            <div class="dropdown-avatar" id="dropdownAvatar"><i class="fas fa-user-circle"></i></div>
+                            <div class="dropdown-info">
+                                <strong id="dropdownName">—</strong>
+                                <span id="dropdownEmail">—</span>
+                            </div>
+                        </div>
+                        <div class="user-dropdown-body">
+                            <button class="dropdown-item" id="dropdownProfile">
+                                <i class="fas fa-user-edit"></i> <span data-i18n="dropdown_profile">إدارة الملف الشخصي</span>
+                            </button>
+                            <button class="dropdown-item" id="dropdownSignOut">
+                                <i class="fas fa-sign-out-alt"></i> <span data-i18n="dropdown_signout">تسجيل الخروج</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Page -->
+        <section class="page active" id="page-dashboard">
+            <!-- User Welcome Card -->
+            <div class="user-welcome-card hidden" id="userWelcomeCard">
+                <div class="welcome-avatar" id="welcomeAvatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="welcome-info">
+                    <h3 id="welcomeUserName">مرحباً</h3>
+                    <p id="welcomeUserEmail"></p>
+                    <span class="welcome-badge" id="welcomeBadge"></span>
+                </div>
+                <div class="welcome-actions">
+                    <button class="btn btn-outline btn-sm" id="welcomeEditProfile">
+                        <i class="fas fa-user-edit"></i> <span data-i18n="welcome_profile">الملف الشخصي</span>
+                    </button>
+                    <button class="btn btn-outline btn-sm btn-signout-small" id="welcomeSignOut">
+                        <i class="fas fa-sign-out-alt"></i> <span data-i18n="welcome_signout">خروج</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Guest Welcome -->
+            <div class="guest-welcome-card" id="guestWelcomeCard">
+                <div class="guest-welcome-content">
+                    <i class="fas fa-hand-sparkles"></i>
+                    <div>
+                        <h3 data-i18n="guest_welcome_title">مرحباً بك في BIM Plan Pro</h3>
+                        <p data-i18n="guest_welcome_desc">سجّل دخولك لحفظ مشاريعك والوصول لجميع المميزات</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-sm" id="guestLoginBtn">
+                    <i class="fas fa-sign-in-alt"></i> <span data-i18n="btn_guest_login">تسجيل الدخول</span>
+                </button>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalProjects">0</h3>
+                        <p data-i18n="stat_total_projects">إجمالي المشاريع</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="completedPlans">0</h3>
+                        <p data-i18n="stat_completed_plans">خطط مكتملة</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="pendingPlans">0</h3>
+                        <p data-i18n="stat_pending_plans">قيد التنفيذ</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>ISO 19650</h3>
+                        <p data-i18n="stat_iso_standard">معيار معتمد</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Latest Project Details Card -->
+                <div class="card latest-project-details" id="latestProjectCard" style="display:none;">
+                    <div class="card-header">
+                        <h2><i class="fas fa-clipboard-list"></i> <span data-i18n="card_latest_project">تفاصيل آخر مشروع</span></h2>
+                        <div class="card-header-actions">
+                            <button class="btn btn-primary btn-sm" id="dashEditProjectBtn">
+                                <i class="fas fa-edit"></i> <span data-i18n="btn_edit">تعديل</span>
+                            </button>
+                            <button class="btn btn-outline btn-sm" id="dashViewPlanBtn">
+                                <i class="fas fa-eye"></i> <span data-i18n="btn_plan">الخطة</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" id="latestProjectBody"></div>
+                </div>
+
+                <div class="card recent-projects">
+                    <div class="card-header">
+                        <h2><i class="fas fa-history"></i> <span data-i18n="card_recent_projects">أحدث المشاريع</span></h2>
+                        <a href="#" class="view-all" data-page="projects" data-i18n="btn_view_all">عرض الكل</a>
+                    </div>
+                    <div class="card-body" id="recentProjectsList">
+                        <div class="empty-state">
+                            <i class="fas fa-folder-plus"></i>
+                            <h3 data-i18n="empty_no_projects">لا توجد مشاريع بعد</h3>
+                            <p data-i18n="empty_start_first">ابدأ بإنشاء أول خطة تنفيذ BIM</p>
+                            <button class="btn btn-primary start-wizard-btn">
+                                <i class="fas fa-magic"></i> <span data-i18n="btn_start_now">ابدأ الآن</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card iso-overview">
+                    <div class="card-header">
+                        <h2><i class="fas fa-shield-alt"></i> <span data-i18n="card_iso_structure">هيكل ISO 19650</span></h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="iso-checklist">
+                            <div class="iso-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="iso_info_delivery">استراتيجية تسليم المعلومات</span>
+                            </div>
+                            <div class="iso-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="iso_cde">بيئة البيانات المشتركة (CDE)</span>
+                            </div>
+                            <div class="iso-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="iso_roles">أدوار ومسؤوليات الإدارة</span>
+                            </div>
+                            <div class="iso-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="iso_standards">معايير وطرق المعلومات</span>
+                            </div>
+                            <div class="iso-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="iso_qa">ضمان الجودة والمراجعة</span>
+                            </div>
+                            <div class="iso-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="iso_tech">البنية التحتية للتكنولوجيا</span>
+                            </div>
+                            <div class="iso-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="iso_deliverables">التسليمات والمراحل</span>
+                            </div>
+                            <div class="iso-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="iso_risk">إدارة المخاطر</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wizard Page -->
+        <section class="page" id="page-wizard">
+            <div class="wizard-container">
+                <!-- Progress Bar -->
+                <div class="wizard-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="step active" data-step="1">
+                            <div class="step-circle">1</div>
+                            <span data-i18n="step_1">معلومات المشروع</span>
+                        </div>
+                        <div class="step" data-step="2">
+                            <div class="step-circle">2</div>
+                            <span data-i18n="step_2">الفريق والأدوار</span>
+                        </div>
+                        <div class="step" data-step="3">
+                            <div class="step-circle">3</div>
+                            <span data-i18n="step_3">المتطلبات التقنية</span>
+                        </div>
+                        <div class="step" data-step="4">
+                            <div class="step-circle">4</div>
+                            <span data-i18n="step_4">إعدادات BIM</span>
+                        </div>
+                        <div class="step" data-step="5">
+                            <div class="step-circle">5</div>
+                            <span data-i18n="step_5">توليد الخطة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Project Info -->
+                <div class="wizard-step active" id="step-1">
+                    <div class="step-header">
+                        <div class="step-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h2 data-i18n="wizard_step1_title">معلومات المشروع الأساسية</h2>
+                        <p data-i18n="wizard_step1_desc">أدخل البيانات الأساسية للمشروع لبدء إنشاء خطة تنفيذ BIM</p>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="projectName">
+                                <i class="fas fa-tag"></i> <span data-i18n="label_project_name">اسم المشروع</span> <span class="required">*</span>
+                            </label>
+                            <input type="text" id="projectName" data-i18n-placeholder="ph_project_name" placeholder="مثال: برج المملكة - الرياض" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectNumber">
+                                <i class="fas fa-hashtag"></i> <span data-i18n="label_project_number">رقم المشروع</span>
+                            </label>
+                            <input type="text" id="projectNumber" data-i18n-placeholder="ph_project_number" placeholder="PRJ-2026-001">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectLocation">
+                                <i class="fas fa-map-marker-alt"></i> <span data-i18n="label_project_location">موقع المشروع</span> <span class="required">*</span>
+                            </label>
+                            <input type="text" id="projectLocation" data-i18n-placeholder="ph_location" placeholder="المدينة، الدولة">
+                        </div>
+                        <div class="form-group">
+                            <label for="clientName">
+                                <i class="fas fa-user-tie"></i> <span data-i18n="label_client_name">اسم العميل</span> <span class="required">*</span>
+                            </label>
+                            <input type="text" id="clientName" data-i18n-placeholder="ph_client" placeholder="اسم الجهة المالكة">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectType">
+                                <i class="fas fa-building"></i> <span data-i18n="label_project_type">نوع المشروع</span> <span class="required">*</span>
+                            </label>
+                            <select id="projectType">
+                                <option value="" data-i18n="ph_select_type">اختر نوع المشروع</option>
+                                <option value="residential" data-i18n="type_residential">سكني</option>
+                                <option value="commercial" data-i18n="type_commercial">تجاري</option>
+                                <option value="mixed" data-i18n="type_mixed">متعدد الاستخدامات</option>
+                                <option value="industrial" data-i18n="type_industrial">صناعي</option>
+                                <option value="infrastructure" data-i18n="type_infrastructure">بنية تحتية</option>
+                                <option value="healthcare" data-i18n="type_healthcare">صحي</option>
+                                <option value="educational" data-i18n="type_educational">تعليمي</option>
+                                <option value="hospitality" data-i18n="type_hospitality">فندقي / ضيافة</option>
+                                <option value="government" data-i18n="type_government">حكومي</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectScale">
+                                <i class="fas fa-ruler-combined"></i> <span data-i18n="label_project_scale">حجم المشروع</span>
+                            </label>
+                            <select id="projectScale">
+                                <option value="" data-i18n="ph_select_scale">اختر حجم المشروع</option>
+                                <option value="small" data-i18n="scale_small">صغير (أقل من 5,000 م²)</option>
+                                <option value="medium" data-i18n="scale_medium">متوسط (5,000 - 50,000 م²)</option>
+                                <option value="large" data-i18n="scale_large">كبير (50,000 - 200,000 م²)</option>
+                                <option value="mega" data-i18n="scale_mega">ضخم (أكثر من 200,000 م²)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="startDate">
+                                <i class="fas fa-calendar-alt"></i> <span data-i18n="label_start_date">تاريخ البداية المتوقع</span>
+                            </label>
+                            <input type="date" id="startDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">
+                                <i class="fas fa-calendar-check"></i> <span data-i18n="label_end_date">تاريخ الانتهاء المتوقع</span>
+                            </label>
+                            <input type="date" id="endDate">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="projectDescription">
+                                <i class="fas fa-align-right"></i> <span data-i18n="label_description">وصف المشروع</span>
+                            </label>
+                            <textarea id="projectDescription" rows="3" data-i18n-placeholder="ph_description" placeholder="وصف مختصر للمشروع..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Team & Roles -->
+                <div class="wizard-step" id="step-2">
+                    <div class="step-header">
+                        <div class="step-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2 data-i18n="wizard_step2_title">الفريق والأدوار (ISO 19650)</h2>
+                        <p data-i18n="wizard_step2_desc">حدد أعضاء الفريق وأدوارهم وفقاً لمعيار ISO 19650</p>
+                    </div>
+                    <div class="roles-section">
+                        <div class="role-card">
+                            <div class="role-header">
+                                <i class="fas fa-crown"></i>
+                                <h3 data-i18n="role_appointing">الطرف المعيّن (Appointing Party)</h3>
+                                <span class="role-badge" data-i18n="badge_required">مطلوب</span>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="appointingPartyName" data-i18n="label_org_name">الاسم / الجهة</label>
+                                    <input type="text" id="appointingPartyName" data-i18n-placeholder="ph_appointing" placeholder="اسم الجهة المعيّنة">
+                                </div>
+                                <div class="form-group">
+                                    <label for="appointingPartyContact" data-i18n="label_email">البريد الإلكتروني</label>
+                                    <input type="email" id="appointingPartyContact" placeholder="email@example.com">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="role-card">
+                            <div class="role-header">
+                                <i class="fas fa-hard-hat"></i>
+                                <h3 data-i18n="role_lead">الطرف المعيّن الرئيسي (Lead Appointed Party)</h3>
+                                <span class="role-badge" data-i18n="badge_required">مطلوب</span>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="leadApName" data-i18n="label_org_name">الاسم / الجهة</label>
+                                    <input type="text" id="leadApName" data-i18n-placeholder="ph_lead" placeholder="اسم الجهة الرئيسية">
+                                </div>
+                                <div class="form-group">
+                                    <label for="leadApContact" data-i18n="label_email">البريد الإلكتروني</label>
+                                    <input type="email" id="leadApContact" placeholder="email@example.com">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="role-card">
+                            <div class="role-header">
+                                <i class="fas fa-user-shield"></i>
+                                <h3 data-i18n="role_info_manager">مدير المعلومات (Information Manager)</h3>
+                                <span class="role-badge info" data-i18n="badge_recommended">موصى به</span>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="infoManagerName" data-i18n="label_name">الاسم</label>
+                                    <input type="text" id="infoManagerName" data-i18n-placeholder="ph_info_manager" placeholder="اسم مدير المعلومات">
+                                </div>
+                                <div class="form-group">
+                                    <label for="infoManagerContact" data-i18n="label_email">البريد الإلكتروني</label>
+                                    <input type="email" id="infoManagerContact" placeholder="email@example.com">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="taskTeamsContainer">
+                            <div class="role-card task-team" data-team-index="0">
+                                <div class="role-header">
+                                    <i class="fas fa-users-cog"></i>
+                                    <h3>فريق المهام 1 (Task Team)</h3>
+                                    <button class="btn-icon remove-team" title="إزالة"><i class="fas fa-times"></i></button>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label data-i18n="label_team_name">اسم الفريق / التخصص</label>
+                                        <input type="text" class="teamName" data-i18n-placeholder="ph_team_name" placeholder="مثال: فريق التصميم المعماري">
+                                    </div>
+                                    <div class="form-group">
+                                        <label data-i18n="label_team_company">الجهة / الشركة</label>
+                                        <input type="text" class="teamCompany" data-i18n-placeholder="ph_team_company" placeholder="اسم الشركة">
+                                    </div>
+                                    <div class="form-group">
+                                        <label data-i18n="label_team_discipline">التخصص</label>
+                                        <select class="teamDiscipline">
+                                            <option value="architecture" data-i18n="disc_architecture">معماري</option>
+                                            <option value="structural" data-i18n="disc_structural">إنشائي</option>
+                                            <option value="mep" data-i18n="disc_mep">ميكانيكي وكهربائي وسباكة</option>
+                                            <option value="civil" data-i18n="disc_civil">مدني</option>
+                                            <option value="landscape" data-i18n="disc_landscape">تنسيق المواقع</option>
+                                            <option value="interior" data-i18n="disc_interior">تصميم داخلي</option>
+                                            <option value="other" data-i18n="disc_other">أخرى</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label data-i18n="label_team_email">البريد الإلكتروني</label>
+                                        <input type="email" class="teamEmail" placeholder="email@example.com">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline add-team-btn" id="addTeamBtn">
+                            <i class="fas fa-plus"></i> <span data-i18n="btn_add_team">إضافة فريق مهام جديد</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Technical Requirements -->
+                <div class="wizard-step" id="step-3">
+                    <div class="step-header">
+                        <div class="step-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h2 data-i18n="wizard_step3_title">المتطلبات التقنية</h2>
+                        <p data-i18n="wizard_step3_desc">حدد البرامج والتقنيات المستخدمة في المشروع</p>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label><i class="fas fa-cube"></i> <span data-i18n="label_authoring_tools">برامج النمذجة (BIM Authoring Tools)</span></label>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="software" value="Revit"> Autodesk Revit
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="software" value="ArchiCAD"> ArchiCAD
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="software" value="Tekla"> Tekla Structures
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="software" value="AllPlan"> Allplan
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="software" value="Civil3D"> Civil 3D
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="software" value="Bentley"> Bentley OpenBuildings
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label><i class="fas fa-exchange-alt"></i> <span data-i18n="label_coordination_tools">أدوات التنسيق والمراجعة</span></label>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="coordination" value="Navisworks"> Navisworks
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="coordination" value="Solibri"> Solibri
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="coordination" value="BIMcollab"> BIMcollab
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="coordination" value="BIM360"> Autodesk Construction Cloud
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="coordination" value="Trimble"> Trimble Connect
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="coordination" value="SimpleBIM"> SimpleBIM
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cdeSystem">
+                                <i class="fas fa-cloud"></i> <span data-i18n="label_cde">بيئة البيانات المشتركة (CDE)</span>
+                            </label>
+                            <select id="cdeSystem">
+                                <option value="" data-i18n="ph_cde">اختر نظام CDE</option>
+                                <option value="ACC">Autodesk Construction Cloud</option>
+                                <option value="Aconex">Oracle Aconex</option>
+                                <option value="ProjectWise">Bentley ProjectWise</option>
+                                <option value="Trimble">Trimble Connect</option>
+                                <option value="SharePoint">SharePoint</option>
+                                <option value="Nextcloud">Nextcloud</option>
+                                <option value="custom" data-i18n="cde_custom">نظام مخصص</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exchangeFormat">
+                                <i class="fas fa-file-export"></i> <span data-i18n="label_exchange_formats">صيغ التبادل</span>
+                            </label>
+                            <div class="checkbox-grid compact">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="format" value="IFC" checked> IFC
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="format" value="RVT"> RVT
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="format" value="NWC"> NWC
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="format" value="DWG"> DWG
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="format" value="PDF"> PDF
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="format" value="COBie"> COBie
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="coordinateSystem">
+                                <i class="fas fa-crosshairs"></i> <span data-i18n="label_coordinate_system">نظام الإحداثيات</span>
+                            </label>
+                            <input type="text" id="coordinateSystem" data-i18n-placeholder="ph_coordinates" placeholder="مثال: WGS 84 / UTM Zone 38N">
+                        </div>
+                        <div class="form-group">
+                            <label for="unitSystem">
+                                <i class="fas fa-ruler"></i> <span data-i18n="label_unit_system">نظام الوحدات</span>
+                            </label>
+                            <select id="unitSystem">
+                                <option value="metric" data-i18n="unit_metric">متري (م، مم)</option>
+                                <option value="imperial" data-i18n="unit_imperial">إمبراطوري (قدم، بوصة)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: BIM Settings -->
+                <div class="wizard-step" id="step-4">
+                    <div class="step-header">
+                        <div class="step-icon">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <h2 data-i18n="wizard_step4_title">إعدادات BIM ومستوى التطوير</h2>
+                        <p data-i18n="wizard_step4_desc">حدد مستويات التطوير ومتطلبات المعلومات</p>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label><i class="fas fa-layer-group"></i> <span data-i18n="label_lod_full">مستوى تطوير المعلومات (Level of Information Need)</span></label>
+                            <div class="lod-grid">
+                                <div class="lod-card" data-lod="100">
+                                    <div class="lod-header">LOD 100</div>
+                                    <div class="lod-desc" data-i18n="lod_100">مفاهيمي</div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" name="lod" value="100" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="lod-card" data-lod="200">
+                                    <div class="lod-header">LOD 200</div>
+                                    <div class="lod-desc" data-i18n="lod_200">تقريبي</div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" name="lod" value="200" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="lod-card" data-lod="300">
+                                    <div class="lod-header">LOD 300</div>
+                                    <div class="lod-desc" data-i18n="lod_300">دقيق</div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" name="lod" value="300" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="lod-card" data-lod="350">
+                                    <div class="lod-header">LOD 350</div>
+                                    <div class="lod-desc" data-i18n="lod_350">تنسيقي</div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" name="lod" value="350">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="lod-card" data-lod="400">
+                                    <div class="lod-header">LOD 400</div>
+                                    <div class="lod-desc" data-i18n="lod_400">تصنيعي</div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" name="lod" value="400">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="lod-card" data-lod="500">
+                                    <div class="lod-header">LOD 500</div>
+                                    <div class="lod-desc" data-i18n="lod_500">كما بُني</div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" name="lod" value="500">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="namingConvention">
+                                <i class="fas fa-font"></i> <span data-i18n="label_naming">معيار تسمية الملفات</span>
+                            </label>
+                            <select id="namingConvention">
+                                <option value="iso19650">ISO 19650 Standard</option>
+                                <option value="bs1192">BS 1192</option>
+                                <option value="custom" data-i18n="naming_custom">مخصص</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="classificationSystem">
+                                <i class="fas fa-sitemap"></i> <span data-i18n="label_classification_sys">نظام التصنيف</span>
+                            </label>
+                            <select id="classificationSystem">
+                                <option value="uniclass">Uniclass 2015</option>
+                                <option value="omniclass">OmniClass</option>
+                                <option value="masterformat">MasterFormat</option>
+                                <option value="custom" data-i18n="classification_custom">مخصص</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label><i class="fas fa-tasks"></i> <span data-i18n="label_bim_uses">استخدامات BIM المطلوبة</span></label>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="bimUse" value="3DCoordination" checked> <span data-i18n="bim_3d">التنسيق ثلاثي الأبعاد</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="bimUse" value="ClashDetection" checked> <span data-i18n="bim_clash">كشف التعارضات</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="bimUse" value="QuantityTakeoff"> <span data-i18n="bim_quantity">حصر الكميات</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="bimUse" value="4DScheduling"> <span data-i18n="bim_4d">الجدولة الزمنية 4D</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="bimUse" value="5DCostEstimation"> <span data-i18n="bim_5d">تقدير التكاليف 5D</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="bimUse" value="EnergyAnalysis"> <span data-i18n="bim_energy">تحليل الطاقة</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="bimUse" value="FacilityManagement"> <span data-i18n="bim_fm">إدارة المرافق</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="bimUse" value="Visualization"> <span data-i18n="bim_viz">التصور والعرض</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="bimUse" value="AsBuilt"> <span data-i18n="bim_asbuilt">نماذج كما بُني</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="additionalNotes">
+                                <i class="fas fa-sticky-note"></i> <span data-i18n="label_notes">ملاحظات إضافية</span>
+                            </label>
+                            <textarea id="additionalNotes" rows="3" data-i18n-placeholder="ph_notes" placeholder="أي متطلبات خاصة أو ملاحظات إضافية..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Generation -->
+                <div class="wizard-step" id="step-5">
+                    <div class="step-header">
+                        <div class="step-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h2 data-i18n="wizard_step5_title">توليد خطة التنفيذ بالذكاء الاصطناعي</h2>
+                        <p data-i18n="wizard_step5_desc">سيقوم المحرك الذكي بتحليل بياناتك وتوليد خطة تنفيذ متوافقة مع ISO 19650</p>
+                    </div>
+
+                    <!-- Pre-generation summary -->
+                    <div id="preGeneration">
+                        <div class="summary-card">
+                            <h3><i class="fas fa-clipboard-list"></i> <span data-i18n="section_summary">ملخص المدخلات</span></h3>
+                            <div class="summary-grid" id="inputSummary"></div>
+                        </div>
+                        <div class="ai-info-card">
+                            <div class="ai-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="ai-info-text">
+                                <h3 data-i18n="ai_ready_title">المحرك الذكي جاهز</h3>
+                                <p data-i18n="ai_ready_desc">سيتم تحليل جميع المدخلات وتوليد خطة تنفيذ BIM شاملة تشمل:</p>
+                                <ul>
+                                    <li data-i18n="ai_feature_1">استراتيجية تسليم المعلومات</li>
+                                    <li data-i18n="ai_feature_2">بروتوكول بيئة البيانات المشتركة</li>
+                                    <li data-i18n="ai_feature_3">مصفوفة الأدوار والمسؤوليات</li>
+                                    <li data-i18n="ai_feature_4">معايير وطرق المعلومات</li>
+                                    <li data-i18n="ai_feature_5">خطة ضمان الجودة</li>
+                                    <li data-i18n="ai_feature_6">جدول التسليمات والمراحل</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-generate" id="generateBtn">
+                                <i class="fas fa-magic"></i> <span data-i18n="btn_generate_ai">توليد الخطة بالذكاء الاصطناعي</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Generation Progress -->
+                    <div id="generationProgress" class="hidden">
+                        <div class="generation-animation">
+                            <div class="ai-loader">
+                                <div class="ai-brain">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="ai-particles">
+                                    <span></span><span></span><span></span><span></span>
+                                    <span></span><span></span><span></span><span></span>
+                                </div>
+                            </div>
+                            <h3 id="generationStatus" data-i18n="gen_status">جاري تحليل البيانات...</h3>
+                            <div class="generation-steps" id="generationSteps">
+                                <div class="gen-step"><i class="fas fa-spinner fa-spin"></i> <span data-i18n="gen_step_1">تحليل معلومات المشروع</span></div>
+                                <div class="gen-step"><i class="far fa-circle"></i> <span data-i18n="gen_step_2">بناء هيكل ISO 19650</span></div>
+                                <div class="gen-step"><i class="far fa-circle"></i> <span data-i18n="gen_step_3">تحديد الأدوار والمسؤوليات</span></div>
+                                <div class="gen-step"><i class="far fa-circle"></i> <span data-i18n="gen_step_4">إعداد استراتيجية المعلومات</span></div>
+                                <div class="gen-step"><i class="far fa-circle"></i> <span data-i18n="gen_step_5">توليد خطة الجودة</span></div>
+                                <div class="gen-step"><i class="far fa-circle"></i> <span data-i18n="gen_step_6">إنهاء توليد الخطة</span></div>
+                                <div class="gen-step"><i class="far fa-circle"></i> <span data-i18n="gen_step_7">تقرير مطابقة الخطة مع ISO Checklist</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generated Plan -->
+                    <div id="generatedPlan" class="hidden"></div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="wizard-nav">
+                    <button class="btn btn-secondary" id="prevBtn" disabled>
+                        <i class="fas fa-arrow-right"></i> <span data-i18n="btn_prev">السابق</span>
+                    </button>
+                    <button class="btn btn-primary" id="nextBtn">
+                        <span data-i18n="btn_next">التالي</span> <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Page -->
+        <section class="page" id="page-projects">
+            <div class="projects-header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="projectSearch" data-i18n-placeholder="ph_search_projects" placeholder="بحث في المشاريع...">
+                </div>
+                <div class="filter-bar">
+                    <select id="projectFilter">
+                        <option value="all" data-i18n="filter_all">جميع المشاريع</option>
+                        <option value="completed" data-i18n="filter_completed">مكتملة</option>
+                        <option value="draft" data-i18n="filter_draft">مسودة</option>
+                    </select>
+                </div>
+            </div>
+            <div class="projects-grid" id="projectsGrid">
+                <div class="empty-state">
+                    <i class="fas fa-folder-plus"></i>
+                    <h3 data-i18n="empty_no_projects_page">لا توجد مشاريع</h3>
+                    <p data-i18n="empty_start_first">ابدأ بإنشاء أول خطة تنفيذ BIM</p>
+                    <button class="btn btn-primary start-wizard-btn">
+                        <i class="fas fa-magic"></i> <span data-i18n="btn_create_new">إنشاء خطة جديدة</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Project Detail Panel -->
+            <div class="project-detail-panel hidden" id="projectDetailPanel">
+                <div class="detail-panel-header">
+                    <button class="btn btn-outline btn-sm" id="backToProjects">
+                        <i class="fas fa-arrow-right"></i> <span data-i18n="btn_back_projects">العودة للمشاريع</span>
+                    </button>
+                    <div class="detail-panel-actions">
+                        <button class="btn btn-primary btn-sm" id="editProjectBtn">
+                            <i class="fas fa-edit"></i> <span data-i18n="btn_edit">تعديل</span>
+                        </button>
+                        <button class="btn btn-outline btn-sm" id="detailViewPlanBtn">
+                            <i class="fas fa-eye"></i> <span data-i18n="btn_view_plan">عرض الخطة</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="detail-panel-body" id="projectDetailBody"></div>
+            </div>
+        </section>
+
+        <!-- Templates Page -->
+        <section class="page" id="page-templates">
+            <div class="templates-grid">
+                <div class="template-card">
+                    <div class="template-icon"><i class="fas fa-building"></i></div>
+                    <h3 data-i18n="tpl_residential_title">مشروع سكني</h3>
+                    <p data-i18n="tpl_residential_desc">قالب خطة تنفيذ BIM لمشاريع الأبراج والمجمعات السكنية</p>
+                    <button class="btn btn-outline use-template-btn" data-type="residential" data-i18n="btn_use_template">استخدام القالب</button>
+                </div>
+                <div class="template-card">
+                    <div class="template-icon"><i class="fas fa-store"></i></div>
+                    <h3 data-i18n="tpl_commercial_title">مشروع تجاري</h3>
+                    <p data-i18n="tpl_commercial_desc">قالب مخصص للمراكز التجارية والمباني المكتبية</p>
+                    <button class="btn btn-outline use-template-btn" data-type="commercial" data-i18n="btn_use_template">استخدام القالب</button>
+                </div>
+                <div class="template-card">
+                    <div class="template-icon"><i class="fas fa-road"></i></div>
+                    <h3 data-i18n="tpl_infra_title">بنية تحتية</h3>
+                    <p data-i18n="tpl_infra_desc">قالب لمشاريع الطرق والجسور والبنية التحتية</p>
+                    <button class="btn btn-outline use-template-btn" data-type="infrastructure" data-i18n="btn_use_template">استخدام القالب</button>
+                </div>
+                <div class="template-card">
+                    <div class="template-icon"><i class="fas fa-hospital"></i></div>
+                    <h3 data-i18n="tpl_health_title">مشروع صحي</h3>
+                    <p data-i18n="tpl_health_desc">قالب متخصص للمستشفيات والمرافق الصحية</p>
+                    <button class="btn btn-outline use-template-btn" data-type="healthcare" data-i18n="btn_use_template">استخدام القالب</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Page -->
+        <section class="page" id="page-settings">
+            <div class="settings-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-palette"></i> <span data-i18n="settings_display">إعدادات العرض</span></h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="setting-item">
+                            <label data-i18n="label_language">اللغة</label>
+                            <select id="settingLanguage">
+                                <option value="ar" data-i18n="lang_arabic">العربية</option>
+                                <option value="en" data-i18n="lang_english">English</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-database"></i> <span data-i18n="settings_data">إدارة البيانات</span></h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="setting-item">
+                            <label data-i18n="label_export_all">تصدير جميع المشاريع</label>
+                            <button class="btn btn-outline" id="exportAllBtn">
+                                <i class="fas fa-download"></i> <span data-i18n="btn_export_json">تصدير JSON</span>
+                            </button>
+                        </div>
+                        <div class="setting-item">
+                            <label data-i18n="label_import">استيراد مشاريع</label>
+                            <button class="btn btn-outline" id="importBtn">
+                                <i class="fas fa-upload"></i> <span data-i18n="btn_import">استيراد</span>
+                            </button>
+                            <input type="file" id="importFile" accept=".json" class="hidden">
+                        </div>
+                        <div class="setting-item danger">
+                            <label data-i18n="label_delete_all">حذف جميع البيانات</label>
+                            <button class="btn btn-danger" id="clearDataBtn">
+                                <i class="fas fa-trash"></i> <span data-i18n="btn_delete_all">حذف الكل</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ISO 19650 Guide Page -->
+        <section class="page" id="page-guide">
+            <div class="guide-container">
+                <div class="guide-hero">
+                    <div class="guide-hero-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <h2 data-i18n="guide_title">دليل معيار ISO 19650 لإدارة معلومات البناء</h2>
+                    <p data-i18n="guide_subtitle">ملخص شامل لمتطلبات المعيار وخطوات كتابة خطة تنفيذ BIM</p>
+                </div>
+
+                <div class="guide-toc">
+                    <h3><i class="fas fa-list-ol"></i> <span data-i18n="guide_toc">فهرس المحتويات</span></h3>
+                    <div class="toc-grid">
+                        <a href="#guide-s1" class="toc-item"><span class="toc-num">1</span> <span data-i18n="guide_toc_1">ما هو ISO 19650؟</span></a>
+                        <a href="#guide-s2" class="toc-item"><span class="toc-num">2</span> <span data-i18n="guide_toc_2">أجزاء المعيار</span></a>
+                        <a href="#guide-s3" class="toc-item"><span class="toc-num">3</span> <span data-i18n="guide_toc_3">المفاهيم الأساسية</span></a>
+                        <a href="#guide-s4" class="toc-item"><span class="toc-num">4</span> <span data-i18n="guide_toc_4">الأدوار والمسؤوليات</span></a>
+                        <a href="#guide-s5" class="toc-item"><span class="toc-num">5</span> <span data-i18n="guide_toc_5">بيئة البيانات المشتركة CDE</span></a>
+                        <a href="#guide-s6" class="toc-item"><span class="toc-num">6</span> <span data-i18n="guide_toc_6">خطوات كتابة خطة BEP</span></a>
+                        <a href="#guide-s7" class="toc-item"><span class="toc-num">7</span> <span data-i18n="guide_toc_7">أفضل الممارسات</span></a>
+                        <a href="#guide-s8" class="toc-item"><span class="toc-num">8</span> <span>التحليل المقارن والفجوات</span></a>
+                        <a href="#guide-s9" class="toc-item"><span class="toc-num">9</span> <span>عمليات ISO 19650-2 التفصيلية</span></a>
+                        <a href="#guide-s10" class="toc-item"><span class="toc-num">10</span> <span>التشغيل والأمن (ISO-3 و ISO-5)</span></a>
+                        <a href="#guide-s11" class="toc-item"><span class="toc-num">11</span> <span>حوكمة CDE والبيانات الوصفية</span></a>
+                        <a href="#guide-s12" class="toc-item"><span class="toc-num">12</span> <span>جاهزية التدقيق والتوصيات</span></a>
+                    </div>
+                </div>
+
+                <div class="guide-sections">
+                    <div class="guide-section" id="guide-s1">
+                        <div class="guide-section-header">
+                            <span class="guide-num">1</span>
+                            <h3 data-i18n="guide_s1_title">ما هو ISO 19650؟</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <p data-i18n="guide_s1_p1">ISO 19650 هو المعيار الدولي لإدارة المعلومات على مدى دورة حياة الأصل المبني باستخدام نمذجة معلومات البناء (BIM). يوفر إطاراً موحداً لتنظيم وتبادل المعلومات بين جميع الأطراف المشاركة في المشروع.</p>
+                            <div class="guide-highlight">
+                                <i class="fas fa-lightbulb"></i>
+                                <p><strong data-i18n="guide_s1_highlight_label">الهدف الرئيسي:</strong> <span data-i18n="guide_s1_highlight">ضمان إنتاج المعلومات الصحيحة، في الوقت المناسب، بالكمية الكافية، وبالجودة المطلوبة لاتخاذ قرارات فعالة خلال دورة حياة المشروع.</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-section" id="guide-s2">
+                        <div class="guide-section-header">
+                            <span class="guide-num">2</span>
+                            <h3 data-i18n="guide_s2_title">أجزاء معيار ISO 19650</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <div class="guide-parts-grid">
+                                <div class="guide-part-card">
+                                    <div class="part-badge" data-i18n="guide_s2_part1_badge">الجزء 1</div>
+                                    <h4>ISO 19650-1</h4>
+                                    <p data-i18n="guide_s2_part1_desc">المفاهيم والمبادئ الأساسية لإدارة المعلومات باستخدام BIM</p>
+                                </div>
+                                <div class="guide-part-card">
+                                    <div class="part-badge" data-i18n="guide_s2_part2_badge">الجزء 2</div>
+                                    <h4>ISO 19650-2</h4>
+                                    <p data-i18n="guide_s2_part2_desc">مرحلة تسليم الأصول - كيفية إدارة المعلومات أثناء التصميم والبناء</p>
+                                </div>
+                                <div class="guide-part-card">
+                                    <div class="part-badge" data-i18n="guide_s2_part3_badge">الجزء 3</div>
+                                    <h4>ISO 19650-3</h4>
+                                    <p data-i18n="guide_s2_part3_desc">مرحلة تشغيل الأصول - إدارة المعلومات أثناء التشغيل والصيانة</p>
+                                </div>
+                                <div class="guide-part-card">
+                                    <div class="part-badge" data-i18n="guide_s2_part5_badge">الجزء 5</div>
+                                    <h4>ISO 19650-5</h4>
+                                    <p data-i18n="guide_s2_part5_desc">النهج الأمني لإدارة المعلومات - حماية البيانات الحساسة</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-section" id="guide-s3">
+                        <div class="guide-section-header">
+                            <span class="guide-num">3</span>
+                            <h3 data-i18n="guide_s3_title">المفاهيم الأساسية</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <div class="guide-concepts">
+                                <div class="concept-item">
+                                    <h4><i class="fas fa-file-contract"></i> <span data-i18n="guide_s3_info_req_title">متطلبات المعلومات (Information Requirements)</span></h4>
+                                    <ul>
+                                        <li><strong>OIR</strong> - <span data-i18n="guide_s3_oir">متطلبات المعلومات التنظيمية: ما تحتاجه المنظمة لتحقيق أهدافها</span></li>
+                                        <li><strong>PIR</strong> - <span data-i18n="guide_s3_pir">متطلبات معلومات المشروع: المعلومات اللازمة لاتخاذ قرارات المشروع</span></li>
+                                        <li><strong>AIR</strong> - <span data-i18n="guide_s3_air">متطلبات معلومات الأصل: المعلومات المطلوبة لإدارة الأصل</span></li>
+                                        <li><strong>EIR</strong> - <span data-i18n="guide_s3_eir">متطلبات تبادل المعلومات: ما يجب على كل طرف تقديمه</span></li>
+                                    </ul>
+                                </div>
+                                <div class="concept-item">
+                                    <h4><i class="fas fa-layer-group"></i> <span data-i18n="guide_s3_loin_title">مستوى المعلومات المطلوب (Level of Information Need)</span></h4>
+                                    <p data-i18n="guide_s3_loin_desc">يشمل ثلاثة أبعاد لكل عنصر في النموذج:</p>
+                                    <ul>
+                                        <li><strong data-i18n="guide_s3_loin_geo">التفاصيل الهندسية:</strong> <span data-i18n="guide_s3_loin_geo_desc">مستوى دقة الشكل ثلاثي الأبعاد</span></li>
+                                        <li><strong data-i18n="guide_s3_loin_data">البيانات الوصفية:</strong> <span data-i18n="guide_s3_loin_data_desc">الخصائص والمعلومات المرفقة بالعنصر</span></li>
+                                        <li><strong data-i18n="guide_s3_loin_doc">التوثيق:</strong> <span data-i18n="guide_s3_loin_doc_desc">الوثائق والمستندات المرتبطة</span></li>
+                                    </ul>
+                                </div>
+                                <div class="concept-item">
+                                    <h4><i class="fas fa-exchange-alt"></i> <span data-i18n="guide_s3_plans_title">خطط تسليم المعلومات</span></h4>
+                                    <ul>
+                                        <li><strong>MIDP</strong> - <span data-i18n="guide_s3_midp">خطة تسليم المعلومات الرئيسية: الجدول الشامل لجميع التسليمات</span></li>
+                                        <li><strong>TIDP</strong> - <span data-i18n="guide_s3_tidp">خطة تسليم المعلومات الخاصة بالفريق: التزامات كل فريق</span></li>
+                                        <li><strong>BEP</strong> - <span data-i18n="guide_s3_bep">خطة تنفيذ BIM: الوثيقة الشاملة لعملية إدارة المعلومات</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-section" id="guide-s4">
+                        <div class="guide-section-header">
+                            <span class="guide-num">4</span>
+                            <h3 data-i18n="guide_s4_title">الأدوار والمسؤوليات</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <table class="guide-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="guide_s4_role">الدور</th>
+                                        <th data-i18n="guide_s4_english">بالإنجليزية</th>
+                                        <th data-i18n="guide_s4_desc">الوصف</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong data-i18n="guide_s4_r1">الطرف المعيّن</strong></td>
+                                        <td data-i18n="guide_s4_r1_en">Appointing Party</td>
+                                        <td data-i18n="guide_s4_r1_desc">المالك أو العميل الذي يحدد متطلبات المعلومات ويقبل التسليمات</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong data-i18n="guide_s4_r2">الطرف المعيّن الرئيسي</strong></td>
+                                        <td data-i18n="guide_s4_r2_en">Lead Appointed Party</td>
+                                        <td data-i18n="guide_s4_r2_desc">الجهة الرئيسية المسؤولة عن تنسيق عمل جميع الفرق وتجميع النماذج</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong data-i18n="guide_s4_r3">الأطراف المعيّنة</strong></td>
+                                        <td data-i18n="guide_s4_r3_en">Appointed Parties</td>
+                                        <td data-i18n="guide_s4_r3_desc">الفرق المتخصصة (معماري، إنشائي، MEP) التي تنتج النماذج</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong data-i18n="guide_s4_r4">مدير المعلومات</strong></td>
+                                        <td data-i18n="guide_s4_r4_en">Information Manager</td>
+                                        <td data-i18n="guide_s4_r4_desc">المسؤول عن إدارة CDE ومراقبة جودة المعلومات والالتزام بالمعايير</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="guide-section" id="guide-s5">
+                        <div class="guide-section-header">
+                            <span class="guide-num">5</span>
+                            <h3 data-i18n="guide_s5_title">بيئة البيانات المشتركة (CDE)</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <p data-i18n="guide_s5_intro">بيئة البيانات المشتركة هي المصدر الوحيد للمعلومات في المشروع. تتكون من أربع حالات:</p>
+                            <div class="cde-flow">
+                                <div class="cde-stage">
+                                    <div class="cde-badge wip">WIP</div>
+                                    <h4 data-i18n="guide_s5_wip">العمل الجاري</h4>
+                                    <p data-i18n="guide_s5_wip_desc">منطقة العمل الخاصة بكل فريق لتطوير النماذج</p>
+                                </div>
+                                <div class="cde-arrow"><i class="fas fa-arrow-left"></i></div>
+                                <div class="cde-stage">
+                                    <div class="cde-badge shared">SHARED</div>
+                                    <h4 data-i18n="guide_s5_shared">المشترك</h4>
+                                    <p data-i18n="guide_s5_shared_desc">مشاركة المعلومات بين الفرق للتنسيق والمراجعة</p>
+                                </div>
+                                <div class="cde-arrow"><i class="fas fa-arrow-left"></i></div>
+                                <div class="cde-stage">
+                                    <div class="cde-badge published">PUBLISHED</div>
+                                    <h4 data-i18n="guide_s5_published">المنشور</h4>
+                                    <p data-i18n="guide_s5_published_desc">المعلومات المعتمدة والرسمية للمشروع</p>
+                                </div>
+                                <div class="cde-arrow"><i class="fas fa-arrow-left"></i></div>
+                                <div class="cde-stage">
+                                    <div class="cde-badge archived">ARCHIVED</div>
+                                    <h4 data-i18n="guide_s5_archived">الأرشيف</h4>
+                                    <p data-i18n="guide_s5_archived_desc">السجل التاريخي لجميع المعلومات</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-section" id="guide-s6">
+                        <div class="guide-section-header">
+                            <span class="guide-num">6</span>
+                            <h3 data-i18n="guide_s6_title">خطوات كتابة خطة تنفيذ BIM (BEP)</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <div class="steps-timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-num">1</div>
+                                    <div class="timeline-content">
+                                        <h4 data-i18n="guide_s6_1_title">تحديد معلومات المشروع</h4>
+                                        <p data-i18n="guide_s6_1_desc">توثيق بيانات المشروع الأساسية: الاسم، الموقع، النوع، الحجم، الأطراف المعنية، والجدول الزمني.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-num">2</div>
+                                    <div class="timeline-content">
+                                        <h4 data-i18n="guide_s6_2_title">تحديد الأدوار والمسؤوليات</h4>
+                                        <p data-i18n="guide_s6_2_desc">تعيين الطرف المعيّن والطرف الرئيسي ومدير المعلومات وفرق المهام مع تحديد مسؤوليات كل طرف.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-num">3</div>
+                                    <div class="timeline-content">
+                                        <h4 data-i18n="guide_s6_3_title">إعداد استراتيجية تسليم المعلومات</h4>
+                                        <p data-i18n="guide_s6_3_desc">تحديد مستويات المعلومات المطلوبة لكل مرحلة، ومواعيد التسليم، ومعايير القبول.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-num">4</div>
+                                    <div class="timeline-content">
+                                        <h4 data-i18n="guide_s6_4_title">إعداد بروتوكول CDE</h4>
+                                        <p data-i18n="guide_s6_4_desc">تحديد نظام CDE، هيكل المجلدات، صلاحيات الوصول، وسير عمل المراجعة والاعتماد.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-num">5</div>
+                                    <div class="timeline-content">
+                                        <h4 data-i18n="guide_s6_5_title">تحديد المعايير التقنية</h4>
+                                        <p data-i18n="guide_s6_5_desc">البرامج المعتمدة، معيار التسمية، نظام التصنيف، صيغ التبادل، نظام الإحداثيات والوحدات.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-num">6</div>
+                                    <div class="timeline-content">
+                                        <h4 data-i18n="guide_s6_6_title">وضع خطة ضمان الجودة</h4>
+                                        <p data-i18n="guide_s6_6_desc">إجراءات الفحص الداخلي والخارجي، قوائم المراجعة، ومعايير القبول لكل تسليم.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-num">7</div>
+                                    <div class="timeline-content">
+                                        <h4 data-i18n="guide_s6_7_title">إدارة المخاطر والأمن</h4>
+                                        <p data-i18n="guide_s6_7_desc">تحديد المخاطر المحتملة، إجراءات التخفيف، وسياسة أمن المعلومات.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-section" id="guide-s7">
+                        <div class="guide-section-header">
+                            <span class="guide-num">7</span>
+                            <h3 data-i18n="guide_s7_title">أفضل الممارسات</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <div class="best-practices-grid">
+                                <div class="practice-card">
+                                    <i class="fas fa-handshake"></i>
+                                    <h4 data-i18n="guide_s7_1_title">الاتفاق المبكر</h4>
+                                    <p data-i18n="guide_s7_1_desc">اتفق على معايير BIM وخطة التنفيذ مبكراً قبل بدء أعمال التصميم</p>
+                                </div>
+                                <div class="practice-card">
+                                    <i class="fas fa-sync-alt"></i>
+                                    <h4 data-i18n="guide_s7_2_title">التحديث المستمر</h4>
+                                    <p data-i18n="guide_s7_2_desc">حدّث خطة BEP بشكل دوري مع تطور المشروع وتغير المتطلبات</p>
+                                </div>
+                                <div class="practice-card">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <h4 data-i18n="guide_s7_3_title">التدريب</h4>
+                                    <p data-i18n="guide_s7_3_desc">تأكد من تدريب جميع الفرق على المعايير والأدوات المعتمدة</p>
+                                </div>
+                                <div class="practice-card">
+                                    <i class="fas fa-check-double"></i>
+                                    <h4 data-i18n="guide_s7_4_title">فحص الجودة</h4>
+                                    <p data-i18n="guide_s7_4_desc">طبّق فحوصات الجودة بشكل منتظم ولا تتأخر في حل المشاكل</p>
+                                </div>
+                                <div class="practice-card">
+                                    <i class="fas fa-comments"></i>
+                                    <h4 data-i18n="guide_s7_5_title">التواصل الفعال</h4>
+                                    <p data-i18n="guide_s7_5_desc">عقد اجتماعات تنسيق BIM منتظمة وتوثيق القرارات</p>
+                                </div>
+                                <div class="practice-card">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <h4 data-i18n="guide_s7_6_title">أمن المعلومات</h4>
+                                    <p data-i18n="guide_s7_6_desc">طبّق سياسات أمنية صارمة وراقب صلاحيات الوصول</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-section" id="guide-s8">
+                        <div class="guide-section-header">
+                            <span class="guide-num">8</span>
+                            <h3>التحليل المقارن والفجوات (Comparative Gap Analysis)</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <p>هذا القسم يرفع الدليل من مستوى الملخص السريع إلى مستوى أقرب للتدقيق المهني، عبر مقارنة مباشرة مع متطلبات ISO 19650-1 وISO 19650-2 وISO 19650-3 وISO 19650-5.</p>
+                            <div class="guide-alert warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <div>
+                                    <strong>ملاحظة استراتيجية:</strong>
+                                    نجاح التطبيق لا يعتمد فقط على الإجراءات التنفيذية، بل على تضمين المنظورات الأربع لإدارة المعلومات: منظور المالك، المستخدم، المنفذ، والمجتمع (Clause 4.3).
+                                </div>
+                            </div>
+                            <div class="gap-grid">
+                                <div class="gap-card ok">
+                                    <h4><i class="fas fa-check-circle"></i> نقاط مغطاة بشكل جيد</h4>
+                                    <ul>
+                                        <li>هيكلة متطلبات المعلومات OIR/PIR/AIR/EIR.</li>
+                                        <li>تبني مفهوم Level of Information Need بأبعاده الثلاثة.</li>
+                                        <li>استخدام MIDP وTIDP كآلية تخطيط للتسليم.</li>
+                                    </ul>
+                                </div>
+                                <div class="gap-card gap">
+                                    <h4><i class="fas fa-search"></i> فجوات تحتاج تعميق</h4>
+                                    <ul>
+                                        <li>تقييم القدرة والسعة (Capability and Capacity) قبل التعيين.</li>
+                                        <li>الانتقال من مصفوفة أدوار عامة إلى مصفوفة مسؤوليات تفصيلية لكل حاوية معلومات.</li>
+                                        <li>ربط AIR بأحداث تشغيلية فعلية بدل اعتبارها قائمة ثابتة.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-section" id="guide-s9">
+                        <div class="guide-section-header">
+                            <span class="guide-num">9</span>
+                            <h3>عمليات ISO 19650-2 التفصيلية لمرحلة التسليم</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <p>في المشاريع الكبيرة، يُوصى بالعمل وفق دورة العمليات الكاملة لمرحلة التسليم، وليس فقط خطوات عامة. الترتيب التالي يضمن وضوح التعاقد والتسليمات والتحقق:</p>
+                            <ol class="guide-ordered-list">
+                                <li>تقييم الحاجة وتحديد متطلبات المعلومات على مستوى التعيين.</li>
+                                <li>الدعوة للتعاقد (Invitation to tender) مع تجميع واضح لمتطلبات المعلومات ضمن وثائق المناقصة.</li>
+                                <li>الردود الفنية من الأطراف المعينة وإثبات القدرة والسعة.</li>
+                                <li>التعيين الرسمي وتأكيد مسؤوليات Lead Appointed Party وAppointed Parties.</li>
+                                <li>إعداد وتطوير BEP قبل التنفيذ التفصيلي (Pre-appointment/Post-appointment).</li>
+                                <li>بناء MIDP/TIDP مع مصفوفة مسؤوليات مفصلة تربط كل مخرج معلومات بمالك واضح.</li>
+                                <li>دورات الإنتاج والفحص الذاتي والتحقق قبل النشر داخل CDE.</li>
+                                <li>اعتماد التسليمات وقبولها رسميًا وتغذية سجل التعلم للمراحل التالية.</li>
+                            </ol>
+                            <div class="guide-alert info">
+                                <i class="fas fa-info-circle"></i>
+                                <div>
+                                    <strong>أثر إغفال مرحلة المناقصة:</strong>
+                                    يزيد احتمالية سوء تسعير الجهد المعلوماتي، وضعف جودة التزامات الفرق، وظهور خلافات تعاقدية لاحقًا حول نطاق البيانات المطلوبة.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-section" id="guide-s10">
+                        <div class="guide-section-header">
+                            <span class="guide-num">10</span>
+                            <h3>مرحلة التشغيل والأمن: ISO 19650-3 وISO 19650-5</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <p>القيمة التشغيلية الحقيقية تظهر بعد التسليم. لذلك يجب أن يكون AIM ديناميكيًا ويتم تحديثه عند أحداث تشغيلية محفزة (Trigger Events) وليس فقط في نقاط تسليم المشروع.</p>
+                            <div class="two-col-list">
+                                <div>
+                                    <h4>أمثلة Trigger Events</h4>
+                                    <ul>
+                                        <li>صيانة طارئة لنظام حرج.</li>
+                                        <li>استبدال أصل رئيسي أو مكون عالي الكلفة.</li>
+                                        <li>تعديل تشغيلي بسبب متطلبات تنظيمية أو سلامة.</li>
+                                        <li>حادث أمني أو انقطاع تشغيلي يستلزم تحديث البيانات.</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4>Sensitivity Triage (ISO 19650-5)</h4>
+                                    <ul>
+                                        <li>تصنيف الأصل حسب الحساسية (مثل ST1 إلى ST4).</li>
+                                        <li>تحديد ضوابط الوصول، المشاركة، والتخزين لكل مستوى.</li>
+                                        <li>تعريف إجراءات تصعيد أمنية للأصول الحساسة.</li>
+                                        <li>ربط قرارات الأمن بالمخاطر الفعلية وليس بسياسة عامة فقط.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="guide-alert danger">
+                                <i class="fas fa-shield-alt"></i>
+                                <div>
+                                    <strong>تحذير مهني:</strong>
+                                    في الأصول الحساسة (مطارات، سجون، مراكز بيانات، بنية حرجة)، لا يكفي بند "أمن المعلومات" العام. يجب تطبيق منهجية Triage موثقة وقابلة للتدقيق.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-section" id="guide-s11">
+                        <div class="guide-section-header">
+                            <span class="guide-num">11</span>
+                            <h3>حوكمة CDE والبيانات الوصفية (Metadata Governance)</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <p>الـ CDE ليس مجرد شجرة مجلدات، بل نظام إدارة بيانات وصفية. لتحقيق أتمتة مراجعة واعتماد فعالة، يجب تعريف السمات الإلزامية لكل حاوية معلومات.</p>
+                            <table class="guide-table metadata-table">
+                                <thead>
+                                    <tr>
+                                        <th>السمة الإلزامية</th>
+                                        <th>الغرض</th>
+                                        <th>أثر غيابها</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Revision Code</td>
+                                        <td>تتبع النسخ والتغييرات عبر الزمن.</td>
+                                        <td>فقدان اليقين حول آخر نسخة معتمدة.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status Code</td>
+                                        <td>تحديد حالة الاستخدام (مراجعة/تنسيق/اعتماد/تنفيذ).</td>
+                                        <td>التباس في صلاحية استخدام الملف للقرار أو التنفيذ.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Container Owner</td>
+                                        <td>تحديد الطرف المسؤول عن الجودة والتحديث.</td>
+                                        <td>تضارب المسؤوليات وتأخر معالجة الملاحظات.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Approval Record</td>
+                                        <td>إثبات مسار المراجعة والاعتماد.</td>
+                                        <td>ضعف قابلية التدقيق والامتثال التعاقدي.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="guide-section" id="guide-s12">
+                        <div class="guide-section-header">
+                            <span class="guide-num">12</span>
+                            <h3>جاهزية التدقيق والتوصيات التنفيذية</h3>
+                        </div>
+                        <div class="guide-section-body">
+                            <p>استخدم القائمة التالية كأداة فحص قبل أي تدقيق داخلي أو خارجي لمطابقة ISO 19650:</p>
+                            <ul class="audit-checklist">
+                                <li><i class="far fa-square-check"></i> تم توثيق متطلبات المعلومات وتحديثها دوريًا (OIR/PIR/AIR/EIR).</li>
+                                <li><i class="far fa-square-check"></i> تم إجراء تقييم Capability &amp; Capacity قبل التعيين.</li>
+                                <li><i class="far fa-square-check"></i> مصفوفة المسؤوليات تربط كل عنصر معلومات بجهة واضحة.</li>
+                                <li><i class="far fa-square-check"></i> مراحل CDE مرتبطة بحالات حالة/مراجعة موحدة وقابلة للتتبع.</li>
+                                <li><i class="far fa-square-check"></i> Trigger Events معرفة وتؤدي لتحديث AIM بشكل رسمي.</li>
+                                <li><i class="far fa-square-check"></i> تم تطبيق Sensitivity Triage للأصول الحساسة مع ضوابط موثقة.</li>
+                            </ul>
+                            <div class="guide-highlight">
+                                <i class="fas fa-clipboard-check"></i>
+                                <p><strong>التوصية العملية:</strong> استخدم هذا الدليل كمرجع تشغيلي يومي، لكن في المشاريع الحساسة أو عالية المخاطر يجب الرجوع المباشر للنصوص الأصلية، خصوصًا ISO 19650-5، مع توثيق قرارات الأمن والمسؤوليات بشكل قابل للتدقيق.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Plan View Modal -->
+        <div class="modal-overlay" id="planModal">
+            <div class="modal-content plan-modal">
+                <div class="modal-header">
+                    <h2 id="modalTitle" data-i18n="plan_title">خطة التنفيذ</h2>
+                    <div class="modal-actions">
+                        <button class="btn btn-outline btn-preview" id="previewBtn">
+                            <i class="fas fa-eye"></i> <span data-i18n="btn_preview">معاينة</span>
+                        </button>
+                        <div class="export-dropdown">
+                            <button class="btn btn-outline btn-export-pdf" id="exportPdfDropdownBtn">
+                                <i class="fas fa-file-pdf"></i> <span data-i18n="btn_pdf">PDF</span>
+                                <i class="fas fa-chevron-down dropdown-arrow"></i>
+                            </button>
+                            <div class="export-dropdown-menu" id="pdfDropdownMenu">
+                                <button class="export-lang-option" data-format="pdf" data-lang="ar">
+                                    <i class="fas fa-file-pdf"></i> <span data-i18n="export_pdf_ar">PDF — العربية</span>
+                                </button>
+                                <button class="export-lang-option" data-format="pdf" data-lang="en">
+                                    <i class="fas fa-file-pdf"></i> <span data-i18n="export_pdf_en">PDF — English</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="export-dropdown">
+                            <button class="btn btn-outline btn-export-word" id="exportWordDropdownBtn">
+                                <i class="fas fa-file-word"></i> <span data-i18n="btn_word">Word</span>
+                                <i class="fas fa-chevron-down dropdown-arrow"></i>
+                            </button>
+                            <div class="export-dropdown-menu" id="wordDropdownMenu">
+                                <button class="export-lang-option" data-format="word" data-lang="ar">
+                                    <i class="fas fa-file-word"></i> <span data-i18n="export_word_ar">Word — العربية</span>
+                                </button>
+                                <button class="export-lang-option" data-format="word" data-lang="en">
+                                    <i class="fas fa-file-word"></i> <span data-i18n="export_word_en">Word — English</span>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" id="printPlanBtn">
+                            <i class="fas fa-print"></i> <span data-i18n="btn_print">طباعة</span>
+                        </button>
+                        <button class="modal-close" id="closeModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+            </div>
+        </div>
+
+        <!-- Preview Modal -->
+        <div class="modal-overlay" id="previewModal">
+            <div class="modal-content preview-modal">
+                <div class="modal-header preview-header">
+                    <div class="preview-title-area">
+                        <i class="fas fa-eye preview-icon"></i>
+                        <h2 id="previewModalTitle" data-i18n="preview_title">معاينة المستند</h2>
+                    </div>
+                    <div class="preview-lang-tabs">
+                        <button class="preview-tab active" data-preview-lang="ar" data-i18n="preview_tab_ar">العربية</button>
+                        <button class="preview-tab" data-preview-lang="en" data-i18n="preview_tab_en">English</button>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" id="previewDownloadPdf">
+                            <i class="fas fa-file-pdf"></i> <span data-i18n="btn_download_pdf">تحميل PDF</span>
+                        </button>
+                        <button class="btn btn-primary btn-word-dl" id="previewDownloadWord">
+                            <i class="fas fa-file-word"></i> <span data-i18n="btn_download_word">تحميل Word</span>
+                        </button>
+                        <button class="modal-close" id="closePreviewModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="preview-body">
+                    <iframe id="previewIframe" sandbox="allow-same-origin"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Project Modal -->
+        <div class="modal-overlay" id="editProjectModal">
+            <div class="modal-content edit-project-modal">
+                <div class="modal-header">
+                    <h2><i class="fas fa-edit"></i> <span data-i18n="edit_project_title">تعديل معلومات المشروع</span></h2>
+                    <button class="modal-close" id="closeEditModal"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body edit-form-body" id="editFormBody">
+                    <div class="edit-section">
+                        <h3><i class="fas fa-building"></i> <span data-i18n="edit_section_info">معلومات المشروع</span></h3>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label data-i18n="label_project_name">اسم المشروع</label>
+                                <input type="text" id="editProjectName">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="label_project_number">رقم المشروع</label>
+                                <input type="text" id="editProjectNumber">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="label_location">موقع المشروع</label>
+                                <input type="text" id="editProjectLocation">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="label_client">اسم العميل</label>
+                                <input type="text" id="editClientName">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="label_project_type">نوع المشروع</label>
+                                <select id="editProjectType">
+                                    <option value="residential" data-i18n="type_residential">سكني</option>
+                                    <option value="commercial" data-i18n="type_commercial">تجاري</option>
+                                    <option value="infrastructure" data-i18n="type_infrastructure">بنية تحتية</option>
+                                    <option value="healthcare" data-i18n="type_healthcare">صحي</option>
+                                    <option value="educational" data-i18n="type_educational">تعليمي</option>
+                                    <option value="industrial" data-i18n="type_industrial">صناعي</option>
+                                    <option value="mixed" data-i18n="type_mixed">متعدد الاستخدامات</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="label_project_scale">حجم المشروع</label>
+                                <select id="editProjectScale">
+                                    <option value="small" data-i18n="scale_small">صغير</option>
+                                    <option value="medium" data-i18n="scale_medium">متوسط</option>
+                                    <option value="large" data-i18n="scale_large">كبير</option>
+                                    <option value="mega" data-i18n="scale_mega">ضخم (Mega)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="label_start_date">تاريخ البداية</label>
+                                <input type="date" id="editStartDate">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="label_end_date">تاريخ النهاية</label>
+                                <input type="date" id="editEndDate">
+                            </div>
+                            <div class="form-group full-width">
+                                <label data-i18n="label_description">وصف المشروع</label>
+                                <textarea id="editProjectDescription" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="edit-section">
+                        <h3><i class="fas fa-image"></i> <span data-i18n="edit_section_logo">لوجو الشركة</span></h3>
+                        <div class="logo-upload-area">
+                            <div class="logo-preview-box" id="editLogoPreview">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p data-i18n="edit_logo_upload">اضغط لرفع اللوجو أو اسحبه هنا</p>
+                                <span data-i18n="edit_logo_hint">PNG, JPG, SVG — حد أقصى 500KB</span>
+                            </div>
+                            <input type="file" id="editLogoInput" accept="image/png,image/jpeg,image/svg+xml" class="hidden">
+                            <button class="btn btn-outline btn-sm" id="removeLogoBtn" style="display:none;">
+                                <i class="fas fa-trash"></i> <span data-i18n="edit_remove_logo">إزالة اللوجو</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="edit-section">
+                        <h3><i class="fas fa-user-tie"></i> <span data-i18n="edit_section_roles">الأدوار الرئيسية</span></h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label data-i18n="edit_appointing">الجهة المعيّنة (Appointing Party)</label>
+                                <input type="text" id="editAppointingParty">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="edit_appointing_contact">جهة الاتصال</label>
+                                <input type="text" id="editAppointingPartyContact">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="edit_lead">المكلف الرئيسي (Lead AP)</label>
+                                <input type="text" id="editLeadAP">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="edit_lead_contact">جهة الاتصال</label>
+                                <input type="text" id="editLeadAPContact">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="edit_info_mgr">مدير المعلومات</label>
+                                <input type="text" id="editInfoManager">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="edit_info_mgr_contact">جهة الاتصال</label>
+                                <input type="text" id="editInfoManagerContact">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="saveEditBtn">
+                        <i class="fas fa-save"></i> <span data-i18n="edit_save">حفظ التعديلات</span>
+                    </button>
+                    <button class="btn btn-outline" id="cancelEditBtn">
+                        <i class="fas fa-times"></i> <span data-i18n="edit_cancel">إلغاء</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Auth Modal (outside main so it shows over landing page too) -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-content auth-modal">
+            <button class="modal-close" id="closeAuthModal"><i class="fas fa-times"></i></button>
+
+            <!-- Google Simulation Form (local mode) -->
+            <div id="googleSimForm" class="google-sim-form hidden">
+                <div class="auth-header">
+                    <div class="auth-icon"><svg viewBox="0 0 24 24" width="36" height="36"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
+                    <h2 data-i18n="google_sim_title">تسجيل الدخول بحساب Google</h2>
+                    <p data-i18n="google_sim_desc">أدخل بياناتك للمتابعة (وضع تجريبي)</p>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> <span data-i18n="auth_name">الاسم الكامل</span></label>
+                    <input type="text" id="googleSimName" data-i18n-placeholder="ph_full_name" placeholder="الاسم الكامل">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> <span data-i18n="auth_email">البريد الإلكتروني</span></label>
+                    <input type="email" id="googleSimEmail" placeholder="email@example.com">
+                </div>
+                <button class="btn btn-google-signin btn-full" id="googleSimSubmitBtn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" style="flex-shrink:0;"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                    <span data-i18n="google_sim_continue">متابعة</span>
+                </button>
+                <button class="btn btn-outline btn-full" id="googleSimBackBtn" style="margin-top:8px;">
+                    <i class="fas fa-arrow-right"></i> <span data-i18n="btn_back">رجوع</span>
+                </button>
+                <div class="auth-error hidden" id="googleSimError"></div>
+            </div>
+
+            <!-- Logged-out: Tabs + Forms -->
+            <div id="authFormsContainer">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login" data-i18n="auth_login">تسجيل الدخول</button>
+                    <button class="auth-tab" data-tab="register" data-i18n="auth_register">إنشاء حساب</button>
+                </div>
+
+                <!-- Login Form -->
+                <div class="auth-form active" id="loginForm">
+                    <div class="auth-header">
+                        <div class="auth-icon"><i class="fas fa-building"></i></div>
+                        <h2>BIM Plan Pro</h2>
+                        <p data-i18n="auth_login_desc">سجّل دخولك للوصول لمشاريعك</p>
+                    </div>
+                    <!-- Google Sign-In (primary) -->
+                    <button class="btn btn-google-signin btn-full" id="googleSignInBtn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" style="flex-shrink:0;">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        <span data-i18n="auth_google_login">الدخول بحساب Google</span>
+                    </button>
+                    <div class="auth-divider"><span data-i18n="auth_or">أو</span></div>
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> <span data-i18n="auth_email">البريد الإلكتروني</span></label>
+                        <input type="email" id="loginEmail" placeholder="email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> <span data-i18n="auth_password">كلمة المرور</span></label>
+                        <input type="password" id="loginPassword" placeholder="••••••••">
+                    </div>
+                    <button class="btn btn-primary btn-full" id="loginSubmitBtn">
+                        <i class="fas fa-sign-in-alt"></i> <span data-i18n="auth_login">تسجيل الدخول</span>
+                    </button>
+                    <div class="auth-error hidden" id="loginError"></div>
+                </div>
+
+                <!-- Register Form -->
+                <div class="auth-form" id="registerForm">
+                    <div class="auth-header">
+                        <div class="auth-icon"><i class="fas fa-user-plus"></i></div>
+                        <h2 data-i18n="auth_create_account">إنشاء حساب جديد</h2>
+                        <p data-i18n="auth_register_desc">أنشئ حسابك وابدأ بإعداد خطط BIM</p>
+                    </div>
+                    <!-- Google Sign-Up (primary) -->
+                    <button class="btn btn-google-signin btn-full" id="googleSignUpBtn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" style="flex-shrink:0;">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        <span data-i18n="auth_google_register">التسجيل بحساب Google</span>
+                    </button>
+                    <div class="auth-divider"><span data-i18n="auth_or">أو</span></div>
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> <span data-i18n="auth_name">الاسم الكامل</span></label>
+                        <input type="text" id="registerName" data-i18n-placeholder="ph_full_name" placeholder="الاسم الكامل">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> <span data-i18n="auth_email">البريد الإلكتروني</span></label>
+                        <input type="email" id="registerEmail" placeholder="email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> <span data-i18n="auth_password">كلمة المرور</span></label>
+                        <input type="password" id="registerPassword" placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> <span data-i18n="auth_confirm_password">تأكيد كلمة المرور</span></label>
+                        <input type="password" id="registerPasswordConfirm" placeholder="••••••••">
+                    </div>
+                    <button class="btn btn-primary btn-full" id="registerSubmitBtn">
+                        <i class="fas fa-user-plus"></i> <span data-i18n="auth_register">إنشاء حساب</span>
+                    </button>
+                    <div class="auth-error hidden" id="registerError"></div>
+                </div>
+            </div>
+
+            <!-- Logged-in: Profile Management -->
+            <div id="authProfileContainer" class="hidden">
+                <div class="auth-profile">
+                    <div class="auth-profile-avatar" id="authProfileAvatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3 id="authProfileName"></h3>
+                    <p id="authProfileEmail"></p>
+                    <span class="auth-provider-badge" id="authProviderBadge"></span>
+                </div>
+
+                <!-- Profile Edit Form -->
+                <div class="profile-edit-form">
+                    <div class="profile-section">
+                        <h4><i class="fas fa-user"></i> <span data-i18n="profile_personal">المعلومات الشخصية</span></h4>
+                        <div class="form-group">
+                            <label data-i18n="profile_name">الاسم</label>
+                            <input type="text" id="profileEditName" data-i18n-placeholder="ph_full_name" placeholder="الاسم الكامل">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="profile_company">اسم الشركة</label>
+                            <input type="text" id="profileEditCompany" data-i18n-placeholder="ph_company" placeholder="اسم الشركة أو المؤسسة">
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h4><i class="fas fa-image"></i> <span data-i18n="profile_avatar">صورة الملف الشخصي</span></h4>
+                        <div class="profile-avatar-upload">
+                            <div class="profile-avatar-preview" id="profileAvatarPreview">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="profile-avatar-actions">
+                                <button class="btn btn-outline btn-sm" id="uploadAvatarBtn">
+                                    <i class="fas fa-camera"></i> <span data-i18n="profile_change_avatar">تغيير الصورة</span>
+                                </button>
+                                <button class="btn btn-outline btn-sm btn-danger-outline" id="removeAvatarBtn" style="display:none">
+                                    <i class="fas fa-trash"></i> <span data-i18n="profile_remove">إزالة</span>
+                                </button>
+                                <input type="file" id="avatarFileInput" accept="image/png,image/jpeg" class="hidden">
+                                <span class="upload-hint" data-i18n="profile_avatar_hint">PNG, JPG — حد أقصى 200KB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h4><i class="fas fa-building"></i> <span data-i18n="profile_logo">لوجو الشركة</span></h4>
+                        <div class="profile-avatar-upload">
+                            <div class="profile-logo-preview" id="profileLogoPreview">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="profile-avatar-actions">
+                                <button class="btn btn-outline btn-sm" id="uploadProfileLogoBtn">
+                                    <i class="fas fa-cloud-upload-alt"></i> <span data-i18n="profile_change_logo">تغيير اللوجو</span>
+                                </button>
+                                <button class="btn btn-outline btn-sm btn-danger-outline" id="removeProfileLogoBtn" style="display:none">
+                                    <i class="fas fa-trash"></i> <span data-i18n="profile_remove">إزالة</span>
+                                </button>
+                                <input type="file" id="profileLogoFileInput" accept="image/png,image/jpeg,image/svg+xml" class="hidden">
+                                <span class="upload-hint" data-i18n="profile_logo_hint">PNG, JPG, SVG — حد أقصى 500KB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-section" id="passwordSection">
+                        <h4><i class="fas fa-lock"></i> <span data-i18n="profile_password">تغيير كلمة المرور</span></h4>
+                        <div class="form-group">
+                            <label data-i18n="profile_current_pw">كلمة المرور الحالية</label>
+                            <input type="password" id="profileCurrentPassword" placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="profile_new_pw">كلمة المرور الجديدة</label>
+                            <input type="password" id="profileNewPassword" placeholder="6 أحرف على الأقل">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="profile_confirm_pw">تأكيد كلمة المرور الجديدة</label>
+                            <input type="password" id="profileConfirmPassword" placeholder="••••••••">
+                        </div>
+                    </div>
+
+                    <div class="profile-form-actions">
+                        <button class="btn btn-primary" id="saveProfileBtn">
+                            <i class="fas fa-save"></i> <span data-i18n="profile_save">حفظ التعديلات</span>
+                        </button>
+                        <div class="auth-error hidden" id="profileError"></div>
+                        <div class="auth-success hidden" id="profileSuccess"></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline btn-full btn-signout" id="signOutBtn">
+                    <i class="fas fa-sign-out-alt"></i> <span data-i18n="auth_signout">تسجيل الخروج</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/firebase-auth.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/ai-engine.js"></script>
+    <script src="js/wizard.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

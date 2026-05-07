@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: bim-plan-pro
+    env: python
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        sync: false          # تُدخل قيمتها مرّة واحدة في Render Dashboard
+      - key: FLASK_ENV
+        value: production    # قيمة ثابتة - لا سرّ فيها
