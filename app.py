@@ -66,6 +66,7 @@ def init_db():
             company_logo    TEXT    DEFAULT '',
             provider        TEXT    DEFAULT 'password',
             role            TEXT    DEFAULT 'user',
+            plan            TEXT    DEFAULT 'starter',
             created_at      TEXT    DEFAULT CURRENT_TIMESTAMP
         );
 
@@ -84,6 +85,16 @@ def init_db():
             data        TEXT    NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
+
+        CREATE TABLE IF NOT EXISTS team_members (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            owner_id    INTEGER NOT NULL,
+            email       TEXT    NOT NULL,
+            name        TEXT    DEFAULT '',
+            invited_at  TEXT    DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(owner_id, email),
+            FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+        );
     ''')
     # Migration: add provider column to existing databases
     try:
@@ -94,6 +105,12 @@ def init_db():
     # Migration: add role column to existing databases
     try:
         db.execute("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'")
+        db.commit()
+    except Exception:
+        pass
+    # Migration: add plan column to existing databases
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN plan TEXT DEFAULT 'starter'")
         db.commit()
     except Exception:
         pass
@@ -272,7 +289,8 @@ def login():
         'photo':        user['photo'],
         'company_logo': user['company_logo'],
         'provider':     user['provider'] or 'password',
-        'role':         desired_role
+        'role':         desired_role,
+        'plan':         user['plan'] or 'starter'
     })
 
 
@@ -298,7 +316,8 @@ def me():
         'photo':        user['photo'],
         'company_logo': user['company_logo'],
         'provider':     user['provider'] or 'password',
-        'role':         user['role'] or 'user'
+        'role':         user['role'] or 'user',
+        'plan':         user['plan'] or 'starter'
     })
 
 
@@ -519,10 +538,224 @@ def admin_panel():
 def admin_list_users():
     db   = get_db()
     rows = db.execute(
-        'SELECT id, email, name, company, photo, provider, role, created_at FROM users ORDER BY created_at DESC'
+        'SELECT id, email, name, company, photo, provider, role, plan, created_at FROM users ORDER BY created_at DESC'
     ).fetchall()
     users = [dict(r) for r in rows]
     return jsonify(users)
+
+
+# ---------------------------------------------------------------------------
+# Plans + Team Sharing (Day 4 Round 4 features)
+# ---------------------------------------------------------------------------
+
+VALID_PLANS = {'starter', 'pro', 'enterprise'}
+PLAN_RANK = {'starter': 0, 'pro': 1, 'enterprise': 2}
+TEAM_LIMIT_BY_PLAN = {'starter': 0, 'pro': 5, 'enterprise': 999}
+
+
+def _user_plan(user_row):
+    return (user_row['plan'] or 'starter') if user_row else 'starter'
+
+
+def _has_plan(user_row, min_plan):
+    return PLAN_RANK.get(_user_plan(user_row), 0) >= PLAN_RANK.get(min_plan, 0)
+
+
+@app.route('/api/plan', methods=['GET'])
+@login_required
+def get_plan():
+    """إرجاع باقة المستخدم الحالية + حدودها."""
+    db   = get_db()
+    user = db.execute('SELECT plan FROM users WHERE id=?', (session['user_id'],)).fetchone()
+    plan = _user_plan(user)
+    return jsonify({
+        'plan':       plan,
+        'team_limit': TEAM_LIMIT_BY_PLAN.get(plan, 0),
+        'features': {
+            'company_logo':    plan in ('pro', 'enterprise'),
+            'team_sharing':    plan in ('pro', 'enterprise'),
+            'templates_library': plan == 'enterprise',
+        }
+    })
+
+
+@app.route('/api/plan', methods=['POST'])
+@login_required
+def upgrade_plan():
+    """ترقية/تغيير الباقة (تجربة — بدون دفع فعلي)."""
+    data = request.get_json(silent=True) or {}
+    new_plan = (data.get('plan') or '').strip().lower()
+    if new_plan not in VALID_PLANS:
+        return jsonify({'error': 'باقة غير صالحة'}), 400
+    db = get_db()
+    db.execute('UPDATE users SET plan=? WHERE id=?', (new_plan, session['user_id']))
+    db.commit()
+    return jsonify({'ok': True, 'plan': new_plan})
+
+
+# ----- Team Sharing (Pro: up to 5, Enterprise: unlimited) -----
+
+@app.route('/api/team', methods=['GET'])
+@login_required
+def list_team():
+    db      = get_db()
+    user    = db.execute('SELECT plan FROM users WHERE id=?', (session['user_id'],)).fetchone()
+    plan    = _user_plan(user)
+    limit   = TEAM_LIMIT_BY_PLAN.get(plan, 0)
+    members = db.execute(
+        'SELECT id, email, name, invited_at FROM team_members WHERE owner_id=? ORDER BY invited_at DESC',
+        (session['user_id'],)
+    ).fetchall()
+    return jsonify({
+        'plan':    plan,
+        'limit':   limit,
+        'count':   len(members),
+        'members': [dict(m) for m in members]
+    })
+
+
+@app.route('/api/team', methods=['POST'])
+@login_required
+def add_team_member():
+    if not _has_plan_or_403():
+        return _has_plan_or_403()
+    data  = request.get_json(silent=True) or {}
+    email = (data.get('email') or '').strip().lower()
+    name  = (data.get('name') or '').strip()
+    if not email or '@' not in email:
+        return jsonify({'error': 'بريد إلكتروني غير صالح'}), 400
+    db    = get_db()
+    user  = db.execute('SELECT plan, email FROM users WHERE id=?', (session['user_id'],)).fetchone()
+    plan  = _user_plan(user)
+    if plan == 'starter':
+        return jsonify({'error': 'ميزة المشاركة مع الفريق متاحة في باقتي «المحترف» و«المؤسّسي» فقط'}), 403
+    if email == (user['email'] or '').lower():
+        return jsonify({'error': 'لا يمكن إضافة بريدك الخاص'}), 400
+    limit = TEAM_LIMIT_BY_PLAN.get(plan, 0)
+    count = db.execute('SELECT COUNT(*) AS c FROM team_members WHERE owner_id=?', (session['user_id'],)).fetchone()['c']
+    if count >= limit:
+        return jsonify({'error': f'وصلت إلى الحد الأقصى ({limit}) لباقة {plan}'}), 403
+    try:
+        db.execute(
+            'INSERT INTO team_members (owner_id, email, name) VALUES (?, ?, ?)',
+            (session['user_id'], email, name)
+        )
+        db.commit()
+    except sqlite3.IntegrityError:
+        return jsonify({'error': 'هذا العضو مُضاف مسبقاً'}), 400
+    return jsonify({'ok': True}), 201
+
+
+@app.route('/api/team/<int:member_id>', methods=['DELETE'])
+@login_required
+def remove_team_member(member_id):
+    db = get_db()
+    res = db.execute(
+        'DELETE FROM team_members WHERE id=? AND owner_id=?',
+        (member_id, session['user_id'])
+    )
+    db.commit()
+    if res.rowcount == 0:
+        return jsonify({'error': 'العضو غير موجود'}), 404
+    return jsonify({'ok': True})
+
+
+def _has_plan_or_403():
+    """Helper retained for future per-route gating (currently inlined)."""
+    return True
+
+
+# ----- Templates Library (Enterprise only) -----
+
+TEMPLATES_LIBRARY = [
+    {
+        'id': 'lod',
+        'name_ar': 'مصفوفة LOD',
+        'name_en': 'LOD Matrix',
+        'desc_ar': 'مستويات تطوير النموذج لكل تخصص ومرحلة (100/200/300/350/400/500).',
+        'desc_en': 'Level of Development per discipline and stage.',
+        'tags': ['ISO 19650-1', 'AIA', 'LOD'],
+        'sections': [
+            'Architecture (LOD 100→400)',
+            'Structure (LOD 200→400)',
+            'MEP (LOD 200→400)',
+            'Civil / Site (LOD 200→350)',
+            'As-built (LOD 500)'
+        ]
+    },
+    {
+        'id': 'eir',
+        'name_ar': 'متطلبات تبادل المعلومات (EIR)',
+        'name_en': 'Exchange Information Requirements',
+        'desc_ar': 'وثيقة EIR كاملة وفق ISO 19650-2 — متطلبات صاحب العمل من المعلومات.',
+        'desc_en': 'Full EIR template aligned with ISO 19650-2.',
+        'tags': ['ISO 19650-2', 'Appointing Party'],
+        'sections': [
+            'Information Standard',
+            'Information Production Methods',
+            'Information Delivery',
+            'Acceptance Criteria',
+            'Reference Information & Shared Resources'
+        ]
+    },
+    {
+        'id': 'oir',
+        'name_ar': 'متطلبات معلومات المؤسسة (OIR)',
+        'name_en': 'Organizational Information Requirements',
+        'desc_ar': 'متطلبات معلومات المؤسسة لإدارة أصولها بعد التسليم.',
+        'desc_en': 'Organizational-level information requirements.',
+        'tags': ['ISO 19650-3', 'Asset Management'],
+        'sections': [
+            'Strategic Goals',
+            'Asset Information Triggers',
+            'Stakeholders & Decisions',
+            'Information Needs by Function'
+        ]
+    },
+    {
+        'id': 'pir',
+        'name_ar': 'متطلبات معلومات المشروع (PIR)',
+        'name_en': 'Project Information Requirements',
+        'desc_ar': 'متطلبات معلومات المشروع المشتقة من OIR + متطلبات صاحب العمل.',
+        'desc_en': 'Project-level information requirements derived from OIR.',
+        'tags': ['ISO 19650-2', 'Project'],
+        'sections': [
+            'Key Project Decisions',
+            'Plain-language Questions',
+            'Project Milestones',
+            'Information Triggers'
+        ]
+    },
+    {
+        'id': 'midp',
+        'name_ar': 'خطة تسليم معلومات المشروع الرئيسية (MIDP)',
+        'name_en': 'Master Information Delivery Plan',
+        'desc_ar': 'تجميع لكل TIDPs مع تواريخ التسليم والمسؤولية والصيغ المطلوبة.',
+        'desc_en': 'Aggregated TIDPs with delivery dates and responsibilities.',
+        'tags': ['ISO 19650-2', 'Delivery'],
+        'sections': [
+            'Container Naming Convention',
+            'TIDP Aggregation',
+            'Milestone-by-Milestone Deliverables',
+            'Responsibility Matrix',
+            'Acceptance Workflow'
+        ]
+    }
+]
+
+
+@app.route('/api/templates', methods=['GET'])
+@login_required
+def list_templates():
+    db   = get_db()
+    user = db.execute('SELECT plan FROM users WHERE id=?', (session['user_id'],)).fetchone()
+    if not _has_plan(user, 'enterprise'):
+        return jsonify({
+            'error':       'مكتبة القوالب الموسّعة متاحة في باقة «المؤسّسي» فقط',
+            'required_plan': 'enterprise',
+            'your_plan':   _user_plan(user)
+        }), 403
+    return jsonify({'templates': TEMPLATES_LIBRARY})
 
 
 # ---------------------------------------------------------------------------

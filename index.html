@@ -6,6 +6,7 @@
     <title>BIM Plan Pro - مولد خطة تنفيذ BIM</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/pricing.css">
+    <link rel="stylesheet" href="css/plans.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -311,6 +312,11 @@
             <a href="#" class="nav-item" data-page="templates">
                 <i class="fas fa-file-alt"></i>
                 <span data-i18n="nav_templates">القوالب</span>
+            </a>
+            <a href="#" class="nav-item nav-item-plan hidden" data-page="team" id="navTeam">
+                <i class="fas fa-users"></i>
+                <span data-i18n="nav_team">فريق العمل</span>
+                <span class="nav-plan-tag" data-i18n="tag_pro">PRO</span>
             </a>
             <a href="#" class="nav-item" data-page="guide">
                 <i class="fas fa-book-open"></i>
@@ -1123,30 +1129,105 @@
 
         <!-- Templates Page -->
         <section class="page" id="page-templates">
-            <div class="templates-grid">
-                <div class="template-card">
-                    <div class="template-icon"><i class="fas fa-building"></i></div>
-                    <h3 data-i18n="tpl_residential_title">مشروع سكني</h3>
-                    <p data-i18n="tpl_residential_desc">قالب خطة تنفيذ BIM لمشاريع الأبراج والمجمعات السكنية</p>
-                    <button class="btn btn-outline use-template-btn" data-type="residential" data-i18n="btn_use_template">استخدام القالب</button>
+            <div class="templates-tabs" role="tablist">
+                <button class="templates-tab active" data-tab="builtin" data-i18n="tpl_tab_builtin">القوالب الجاهزة</button>
+                <button class="templates-tab" data-tab="library" id="templatesLibraryTab">
+                    <span data-i18n="tpl_tab_library">المكتبة الموسّعة</span>
+                    <span class="nav-plan-tag" data-i18n="tag_enterprise">ENTERPRISE</span>
+                </button>
+            </div>
+
+            <div class="templates-tab-content active" data-tab-content="builtin">
+                <div class="templates-grid">
+                    <div class="template-card">
+                        <div class="template-icon"><i class="fas fa-building"></i></div>
+                        <h3 data-i18n="tpl_residential_title">مشروع سكني</h3>
+                        <p data-i18n="tpl_residential_desc">قالب خطة تنفيذ BIM لمشاريع الأبراج والمجمعات السكنية</p>
+                        <button class="btn btn-outline use-template-btn" data-type="residential" data-i18n="btn_use_template">استخدام القالب</button>
+                    </div>
+                    <div class="template-card">
+                        <div class="template-icon"><i class="fas fa-store"></i></div>
+                        <h3 data-i18n="tpl_commercial_title">مشروع تجاري</h3>
+                        <p data-i18n="tpl_commercial_desc">قالب مخصص للمراكز التجارية والمباني المكتبية</p>
+                        <button class="btn btn-outline use-template-btn" data-type="commercial" data-i18n="btn_use_template">استخدام القالب</button>
+                    </div>
+                    <div class="template-card">
+                        <div class="template-icon"><i class="fas fa-road"></i></div>
+                        <h3 data-i18n="tpl_infra_title">بنية تحتية</h3>
+                        <p data-i18n="tpl_infra_desc">قالب لمشاريع الطرق والجسور والبنية التحتية</p>
+                        <button class="btn btn-outline use-template-btn" data-type="infrastructure" data-i18n="btn_use_template">استخدام القالب</button>
+                    </div>
+                    <div class="template-card">
+                        <div class="template-icon"><i class="fas fa-hospital"></i></div>
+                        <h3 data-i18n="tpl_health_title">مشروع صحي</h3>
+                        <p data-i18n="tpl_health_desc">قالب متخصص للمستشفيات والمرافق الصحية</p>
+                        <button class="btn btn-outline use-template-btn" data-type="healthcare" data-i18n="btn_use_template">استخدام القالب</button>
+                    </div>
                 </div>
-                <div class="template-card">
-                    <div class="template-icon"><i class="fas fa-store"></i></div>
-                    <h3 data-i18n="tpl_commercial_title">مشروع تجاري</h3>
-                    <p data-i18n="tpl_commercial_desc">قالب مخصص للمراكز التجارية والمباني المكتبية</p>
-                    <button class="btn btn-outline use-template-btn" data-type="commercial" data-i18n="btn_use_template">استخدام القالب</button>
+            </div>
+
+            <div class="templates-tab-content" data-tab-content="library">
+                <div id="templatesLibraryBody">
+                    <div class="library-locked" id="libraryLocked">
+                        <i class="fas fa-lock"></i>
+                        <h3 data-i18n="tpl_lib_locked_title">المكتبة الموسّعة متاحة في باقة «المؤسّسي»</h3>
+                        <p data-i18n="tpl_lib_locked_desc">قوالب احترافية لـ LOD · EIR · OIR · PIR · MIDP وفق ISO 19650</p>
+                        <button class="btn btn-primary" id="libraryUpgradeBtn" data-i18n="tpl_lib_upgrade">ترقية للباقة المؤسّسي</button>
+                    </div>
+                    <div class="library-grid hidden" id="libraryGrid"></div>
                 </div>
-                <div class="template-card">
-                    <div class="template-icon"><i class="fas fa-road"></i></div>
-                    <h3 data-i18n="tpl_infra_title">بنية تحتية</h3>
-                    <p data-i18n="tpl_infra_desc">قالب لمشاريع الطرق والجسور والبنية التحتية</p>
-                    <button class="btn btn-outline use-template-btn" data-type="infrastructure" data-i18n="btn_use_template">استخدام القالب</button>
+            </div>
+        </section>
+
+        <!-- Team Page (Pro/Enterprise) -->
+        <section class="page" id="page-team">
+            <div class="page-header">
+                <div>
+                    <h2><i class="fas fa-users"></i> <span data-i18n="team_title">فريق العمل</span></h2>
+                    <p class="page-subtitle" id="teamSubtitle" data-i18n="team_subtitle">شارك مشاريعك مع أعضاء فريقك</p>
                 </div>
-                <div class="template-card">
-                    <div class="template-icon"><i class="fas fa-hospital"></i></div>
-                    <h3 data-i18n="tpl_health_title">مشروع صحي</h3>
-                    <p data-i18n="tpl_health_desc">قالب متخصص للمستشفيات والمرافق الصحية</p>
-                    <button class="btn btn-outline use-template-btn" data-type="healthcare" data-i18n="btn_use_template">استخدام القالب</button>
+            </div>
+
+            <div class="team-locked hidden" id="teamLocked">
+                <i class="fas fa-lock"></i>
+                <h3 data-i18n="team_locked_title">المشاركة مع الفريق متاحة في باقتي «المحترف» و«المؤسّسي»</h3>
+                <p data-i18n="team_locked_desc">ادعُ حتى 5 أعضاء (المحترف) أو أعضاء غير محدودين (المؤسّسي).</p>
+                <button class="btn btn-primary" id="teamUpgradeBtn" data-i18n="team_upgrade">ترقية الآن</button>
+            </div>
+
+            <div id="teamPanel">
+                <div class="team-stats card">
+                    <div class="team-stat">
+                        <div class="team-stat-num" id="teamCount">0</div>
+                        <div class="team-stat-lbl" data-i18n="team_members_count">الأعضاء</div>
+                    </div>
+                    <div class="team-stat">
+                        <div class="team-stat-num" id="teamLimit">5</div>
+                        <div class="team-stat-lbl" data-i18n="team_limit_label">الحدّ الأقصى</div>
+                    </div>
+                    <div class="team-stat">
+                        <div class="team-stat-num" id="teamPlanLabel">PRO</div>
+                        <div class="team-stat-lbl" data-i18n="team_plan_label">الباقة</div>
+                    </div>
+                </div>
+
+                <div class="card team-invite-card">
+                    <h3 data-i18n="team_invite_title">دعوة عضو جديد</h3>
+                    <form class="team-invite-form" id="teamInviteForm">
+                        <input type="email" id="teamInviteEmail" required placeholder="email@example.com">
+                        <input type="text" id="teamInviteName" placeholder="الاسم (اختياري)" data-i18n-placeholder="team_name_placeholder">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> <span data-i18n="team_invite_btn">إرسال دعوة</span>
+                        </button>
+                    </form>
+                    <p class="team-error hidden" id="teamError"></p>
+                </div>
+
+                <div class="card">
+                    <h3 data-i18n="team_list_title">الأعضاء الحاليون</h3>
+                    <div id="teamList" class="team-list">
+                        <p class="team-empty" data-i18n="team_empty">لا يوجد أعضاء بعد. أضف أول عضو في فريقك أعلاه.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -2001,8 +2082,12 @@
                         </div>
                     </div>
 
-                    <div class="profile-section">
-                        <h4><i class="fas fa-building"></i> <span data-i18n="profile_logo">لوجو الشركة</span></h4>
+                    <div class="profile-section profile-section-plan" id="profileLogoSection">
+                        <h4>
+                            <i class="fas fa-building"></i>
+                            <span data-i18n="profile_logo">لوجو الشركة</span>
+                            <span class="nav-plan-tag" data-i18n="tag_pro">PRO</span>
+                        </h4>
                         <div class="profile-avatar-upload">
                             <div class="profile-logo-preview" id="profileLogoPreview">
                                 <i class="fas fa-building"></i>
@@ -2017,6 +2102,11 @@
                                 <input type="file" id="profileLogoFileInput" accept="image/png,image/jpeg,image/svg+xml" class="hidden">
                                 <span class="upload-hint" data-i18n="profile_logo_hint">PNG, JPG, SVG — حد أقصى 500KB</span>
                             </div>
+                        </div>
+                        <div class="plan-lock-overlay hidden" id="profileLogoLock">
+                            <i class="fas fa-lock"></i>
+                            <p data-i18n="profile_logo_locked">رفع لوجو الشركة متاح في باقتي «المحترف» و«المؤسّسي»</p>
+                            <button class="btn btn-primary btn-sm" data-go-pricing="pro" data-i18n="upgrade_to_pro">ترقية للمحترف</button>
                         </div>
                     </div>
 
@@ -2058,6 +2148,7 @@
     <script src="js/ai-engine.js"></script>
     <script src="js/wizard.js"></script>
     <script src="js/dashboard.js"></script>
+    <script src="js/plans.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

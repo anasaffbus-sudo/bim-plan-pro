@@ -29,6 +29,12 @@ const App = (() => {
         StorageManager.init().then(function () {
             Dashboard.refresh();
         });
+        // Load plan features and apply gating (Pro/Enterprise)
+        if (typeof Plans !== 'undefined') {
+            Plans.refresh();
+        }
+        if (typeof Team !== 'undefined') Team.bind();
+        if (typeof TemplatesLibrary !== 'undefined') TemplatesLibrary.bind();
     }
 
     function _backToLanding() {
@@ -61,10 +67,25 @@ const App = (() => {
         if (startBtnTop) startBtnTop.addEventListener('click', _openAuthFromLanding);
         if (startBtnFinal) startBtnFinal.addEventListener('click', _openAuthFromLanding);
 
-        // Pricing CTAs (start trial) — same as Start: open auth
+        // Pricing CTAs (start trial) — if logged-in, upgrade in place; else open auth
         document.querySelectorAll('.pricing-cta').forEach(function (btn) {
             btn.addEventListener('click', function () {
-                sessionStorage.setItem('bimplan_selected_plan', btn.dataset.planId || '');
+                var planId = btn.dataset.planId || '';
+                sessionStorage.setItem('bimplan_selected_plan', planId);
+                if (Auth.isLoggedIn() && planId && typeof Plans !== 'undefined') {
+                    btn.disabled = true;
+                    var old = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    Plans.upgrade(planId).then(function () {
+                        alert(I18n.t('upgrade_success') + ' ' + planId.toUpperCase());
+                        location.reload();
+                    }).catch(function (e) {
+                        alert(e.message);
+                        btn.disabled = false;
+                        btn.innerHTML = old;
+                    });
+                    return;
+                }
                 _openAuthFromLanding();
             });
         });
@@ -802,6 +823,7 @@ ${closingHTML}
             wizard: I18n.t('nav_wizard'),
             projects: I18n.t('nav_projects'),
             templates: I18n.t('nav_templates'),
+            team: I18n.t('nav_team'),
             guide: I18n.t('nav_guide'),
             settings: I18n.t('nav_settings')
         };
@@ -810,6 +832,13 @@ ${closingHTML}
         // Refresh dashboard when navigating to it
         if (page === 'dashboard' || page === 'projects') {
             Dashboard.refresh();
+        }
+        if (page === 'team' && typeof Team !== 'undefined') {
+            Team.load();
+        }
+        if (page === 'templates' && typeof TemplatesLibrary !== 'undefined') {
+            // Re-evaluate library lock in case plan changed
+            TemplatesLibrary.bind();
         }
 
         // Close mobile sidebar
