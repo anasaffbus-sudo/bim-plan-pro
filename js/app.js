@@ -56,8 +56,10 @@ const App = (() => {
         // Start buttons — require login
         var startBtn = document.getElementById('landingStartBtn');
         var startBtnTop = document.getElementById('landingStartBtnTop');
+        var startBtnFinal = document.getElementById('landingStartBtnFinal');
         if (startBtn) startBtn.addEventListener('click', _openAuthFromLanding);
         if (startBtnTop) startBtnTop.addEventListener('click', _openAuthFromLanding);
+        if (startBtnFinal) startBtnFinal.addEventListener('click', _openAuthFromLanding);
 
         // Landing lang toggle
         var landingLang = document.getElementById('landingLangBtn');

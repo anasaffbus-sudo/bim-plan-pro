@@ -630,6 +630,22 @@ const I18n = (function () {
             landing_feat3_desc: 'صدّر خطتك بصيغة PDF أو Word بتنسيق احترافي جاهز للتقديم.',
             landing_feat4_title: 'عربي وإنجليزي',
             landing_feat4_desc: 'واجهة ومخرجات كاملة باللغتين العربية والإنجليزية مع دعم كامل لـ RTL.',
+
+            // Landing — Problem / Proof / Final CTA (Round 2)
+            landing_problem_tag: 'المشكلة',
+            landing_problem_title: 'إعداد خطة BEP يدوياً يستنزفك',
+            landing_pain1_title: 'أسابيع من العمل',
+            landing_pain1_desc: 'جمع متطلبات المشروع، صياغة الأقسام، ومراجعة المصفوفات يستغرق وقتاً يمكنك إنفاقه على التصميم نفسه.',
+            landing_pain2_title: 'قوالب متضاربة',
+            landing_pain2_desc: 'كل مشروع يبدأ من قالب مختلف، والنتيجة خطط غير متّسقة لا تجتاز مراجعة ISO 19650.',
+            landing_pain3_title: 'أخطاء تكلفك المناقصة',
+            landing_pain3_desc: 'قسم مفقود أو مصفوفة LOD غير مكتملة تكفي لرفض خطّتك من قِبَل صاحب العمل.',
+            landing_proof_bio: 'مهندس BIM ومنسّق معلومات بناء — أبني هذه الأداة لأنّي عشت بنفسي مرارة كتابة خطّة BEP من الصفر في كل مشروع جديد، وأردت اختصار الطريق لكل من يأتي بعدي.',
+            landing_proof_author: '— أنس عفّاص',
+            landing_proof_role: 'مؤسّس BIM Plan Pro',
+            landing_proof_placeholder: '[ مكان لشهادة أوّل مستخدم — قريباً ]',
+            landing_cta_title: 'اختصر أسابيع العمل اليدوي إلى دقائق',
+            landing_cta_desc: 'انضم إلى المهندسين الذين توقّفوا عن إعادة كتابة نفس الخطّة، وابدأ خطّتك الأولى الآن — مجاناً وبدون تسجيل.',
             landing_footer: 'أداة مجانية لتوليد خطط تنفيذ BIM وفق معيار ISO 19650'
         },
 
@@ -1254,6 +1270,22 @@ const I18n = (function () {
             landing_feat3_desc: 'Export your plan as PDF or Word with professional formatting ready for submission.',
             landing_feat4_title: 'Arabic & English',
             landing_feat4_desc: 'Full interface and outputs in both Arabic and English with complete RTL support.',
+
+            // Landing — Problem / Proof / Final CTA (Round 2)
+            landing_problem_tag: 'THE PROBLEM',
+            landing_problem_title: 'Writing a BEP manually drains you',
+            landing_pain1_title: 'Weeks of Work',
+            landing_pain1_desc: 'Gathering project requirements, drafting sections, and reviewing matrices eats up time you should spend on actual design.',
+            landing_pain2_title: 'Inconsistent Templates',
+            landing_pain2_desc: 'Every project starts from a different template — the result is uneven plans that fail ISO 19650 review.',
+            landing_pain3_title: 'Mistakes That Cost the Bid',
+            landing_pain3_desc: 'A missing section or an incomplete LOD matrix is enough for your plan to be rejected by the client.',
+            landing_proof_bio: 'BIM Engineer & Building Information Coordinator — I built this tool because I lived the pain of writing a BEP from scratch on every new project, and I wanted to save that time for everyone who comes next.',
+            landing_proof_author: '— Anas Affas',
+            landing_proof_role: 'Founder of BIM Plan Pro',
+            landing_proof_placeholder: '[ Space reserved for the first user testimonial — coming soon ]',
+            landing_cta_title: 'Turn weeks of manual work into minutes',
+            landing_cta_desc: 'Join the engineers who stopped rewriting the same plan and start your first plan now — free and no signup required.',
             landing_footer: 'A free tool for generating BIM Execution Plans per ISO 19650'
         }
     };
