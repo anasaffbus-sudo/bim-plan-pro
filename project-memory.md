@@ -57,7 +57,7 @@
 - Round 1 (Prompt 6 - Deploy): ✅ مكتمل — commit 6de4af3
 - Round 2 (Prompt 7 - Landing 5 sections): ✅ مكتمل — commit 538c2e3
 - Round 3 (Prompt 7B - Google OAuth + Admin roles): ✅ مكتمل — commit 1eb1797
-- Round 4 (Prompt 8 - Pricing): ⏳ قيد الانتظار
+- Round 4 (Prompt 8 - Pricing): ✅ مكتمل — انظر pricing.md
 - Round 5 (Prompt 9 - 10 launch messages): ⏳ قيد الانتظار
 - Round 6: ⏳ قيد الانتظار
 

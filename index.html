@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BIM Plan Pro - مولد خطة تنفيذ BIM</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pricing.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -34,6 +35,7 @@
                     <span>BIM Plan Pro</span>
                 </div>
                 <nav class="landing-nav">
+                    <a href="#pricing" class="landing-nav-link" data-i18n="nav_pricing">الأسعار</a>
                     <button class="btn btn-theme" id="landingThemeBtn" title="Toggle Theme" aria-label="Toggle Theme">
                         <i class="fas fa-moon"></i>
                     </button>
@@ -170,6 +172,91 @@
                         <div class="proof-testimonial-placeholder" data-i18n="landing_proof_placeholder">[ مكان لشهادة أوّل مستخدم — قريباً ]</div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section (Day 4 Round 4 · Prompt 8) -->
+        <section class="landing-pricing" id="pricing">
+            <div class="landing-container">
+                <div class="pricing-header">
+                    <h2 class="section-title" data-i18n="pricing_title">خطط بسيطة · بدون التزام طويل</h2>
+                    <p class="section-subtitle" data-i18n="pricing_subtitle">جرّب 7 أيام مجاناً — بدون بطاقة ائتمان. ألغِ متى شئت.</p>
+                    <div class="pricing-toggle" role="tablist">
+                        <button class="pricing-toggle-btn active" data-billing="monthly" data-i18n="pricing_monthly">شهرياً</button>
+                        <button class="pricing-toggle-btn" data-billing="yearly">
+                            <span data-i18n="pricing_yearly">سنوياً</span>
+                            <span class="pricing-save-tag" data-i18n="pricing_save">وفّر 20%</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pricing-grid">
+                    <!-- Plan 1: Starter -->
+                    <div class="pricing-card" data-plan="starter">
+                        <div class="pricing-plan-name" data-i18n="pricing_p1_name">المبتدئ</div>
+                        <div class="pricing-price-row">
+                            <span class="pricing-currency">SAR</span>
+                            <span class="pricing-amount" data-monthly="99" data-yearly="950">99</span>
+                            <span class="pricing-period" data-i18n="pricing_per_month">/ شهر</span>
+                        </div>
+                        <p class="pricing-ideal" data-i18n="pricing_p1_ideal">للمهندس الفردي الذي يحتاج BEP واحدة بمواصفات ISO.</p>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p1_f1">مشروع واحد فعّال</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p1_f2">توليد BEP بـ AR/EN</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p1_f3">تصدير PDF + DOCX</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p1_f4">قوالب ISO 19650 الأساسية</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p1_f5">تخزين سحابي</span></li>
+                        </ul>
+                        <button class="btn btn-outline btn-block pricing-cta" data-plan-id="starter">
+                            <span data-i18n="pricing_trial_btn">ابدأ تجربة 7 أيام</span>
+                        </button>
+                    </div>
+
+                    <!-- Plan 2: Pro (featured) -->
+                    <div class="pricing-card pricing-card-featured" data-plan="pro">
+                        <div class="pricing-badge"><i class="fas fa-star"></i> <span data-i18n="pricing_most_popular">الأكثر اختياراً</span></div>
+                        <div class="pricing-plan-name" data-i18n="pricing_p2_name">المحترف</div>
+                        <div class="pricing-price-row">
+                            <span class="pricing-currency">SAR</span>
+                            <span class="pricing-amount" data-monthly="349" data-yearly="3350">349</span>
+                            <span class="pricing-period" data-i18n="pricing_per_month">/ شهر</span>
+                        </div>
+                        <p class="pricing-ideal" data-i18n="pricing_p2_ideal">للمكاتب الاستشارية والمقاولين الذين يديرون 3-10 مشاريع.</p>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p2_f1">حتى 10 مشاريع فعّالة</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p2_f2">كل ميزات «المبتدئ»</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p2_f3">شعار الشركة على كل BEP</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p2_f4">مكتبة قوالب موسّعة (LOD/EIR/MIDP)</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p2_f5">مشاركة مع الفريق</span></li>
+                        </ul>
+                        <button class="btn btn-primary btn-block pricing-cta" data-plan-id="pro">
+                            <span data-i18n="pricing_trial_btn">ابدأ تجربة 7 أيام</span>
+                        </button>
+                    </div>
+
+                    <!-- Plan 3: Enterprise -->
+                    <div class="pricing-card" data-plan="enterprise">
+                        <div class="pricing-plan-name" data-i18n="pricing_p3_name">المؤسّسي</div>
+                        <div class="pricing-price-row">
+                            <span class="pricing-currency">SAR</span>
+                            <span class="pricing-amount" data-monthly="999" data-yearly="9590">999</span>
+                            <span class="pricing-period" data-i18n="pricing_per_month">/ شهر</span>
+                        </div>
+                        <p class="pricing-ideal" data-i18n="pricing_p3_ideal">للشركات الكبيرة التي تحتاج مشاريع غير محدودة ودعماً مباشراً.</p>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p3_f1">مشاريع غير محدودة</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p3_f2">كل ميزات «المحترف»</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p3_f3">تخصيص بهوية الشركة</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p3_f4">دعم WhatsApp + اجتماع تأهيل</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="pricing_p3_f5">API + لوحة إدارة المشرف</span></li>
+                        </ul>
+                        <button class="btn btn-outline btn-block pricing-cta" data-plan-id="enterprise">
+                            <span data-i18n="pricing_trial_btn">ابدأ تجربة 7 أيام</span>
+                        </button>
+                    </div>
+                </div>
+
+                <p class="pricing-note" data-i18n="pricing_note">جميع الخطط تشمل تجربة مجانية 7 أيام · بدون بطاقة ائتمان · ألغِ في أي وقت.</p>
             </div>
         </section>
 

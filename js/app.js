@@ -61,6 +61,32 @@ const App = (() => {
         if (startBtnTop) startBtnTop.addEventListener('click', _openAuthFromLanding);
         if (startBtnFinal) startBtnFinal.addEventListener('click', _openAuthFromLanding);
 
+        // Pricing CTAs (start trial) — same as Start: open auth
+        document.querySelectorAll('.pricing-cta').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                sessionStorage.setItem('bimplan_selected_plan', btn.dataset.planId || '');
+                _openAuthFromLanding();
+            });
+        });
+
+        // Pricing billing toggle (monthly / yearly)
+        var billingBtns = document.querySelectorAll('.pricing-toggle-btn');
+        billingBtns.forEach(function (b) {
+            b.addEventListener('click', function () {
+                billingBtns.forEach(function (x) { x.classList.remove('active'); });
+                b.classList.add('active');
+                var mode = b.dataset.billing;
+                document.querySelectorAll('.pricing-amount').forEach(function (el) {
+                    el.textContent = mode === 'yearly' ? el.dataset.yearly : el.dataset.monthly;
+                });
+                document.querySelectorAll('.pricing-period').forEach(function (el) {
+                    var arYear = I18n.getCurrentLang() === 'ar' ? '/ سنة' : '/ year';
+                    var arMonth = I18n.getCurrentLang() === 'ar' ? '/ شهر' : '/ month';
+                    el.textContent = mode === 'yearly' ? arYear : arMonth;
+                });
+            });
+        });
+
         // Landing lang toggle
         var landingLang = document.getElementById('landingLangBtn');
         if (landingLang) {
