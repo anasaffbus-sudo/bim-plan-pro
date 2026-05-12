@@ -41,6 +41,29 @@
 - storage.js rewritten to use in-memory cache synced to Flask API.
 - firebase-auth.js rewritten to call Flask instead of Firebase.
 
+## المصادقة (Authentication) — محدّث 2026-05-12
+- النوع: Email/Password + Google OAuth 2.0
+- مكتبة OAuth: authlib (Flask-OAuth2 client)
+- جدول users: id, email, password_hash, name, company, photo, company_logo, provider, role, created_at
+- مزوّدات الدخول (provider): 'password' أو 'google.com'
+- الأدوار (role): 'user' (افتراضي) | 'admin'
+- متغيّر البيئة ADMIN_EMAILS: قائمة بريد مفصولة بفاصلة → يحصلون تلقائياً على دور admin عند التسجيل/الدخول
+- المسارات: /api/auth/register, /api/auth/login, /api/auth/logout, /api/auth/me, /api/auth/google/login, /api/auth/google/callback
+- لوحة المشرف: /admin (admin.html) + GET /api/admin/users
+- Decorators: login_required, admin_required
+- آخر تفعيل: 2026-05-12 — commit 1eb1797
+
+## Day 4 Course Progress
+- Round 1 (Prompt 6 - Deploy): ✅ مكتمل — commit 6de4af3
+- Round 2 (Prompt 7 - Landing 5 sections): ✅ مكتمل — commit 538c2e3
+- Round 3 (Prompt 7B - Google OAuth + Admin roles): ✅ مكتمل — commit 1eb1797
+- Round 4 (Prompt 8 - Pricing): ⏳ قيد الانتظار
+- Round 5 (Prompt 9 - 10 launch messages): ⏳ قيد الانتظار
+- Round 6: ⏳ قيد الانتظار
+
+## ميزات إضافية
+- Dark Mode toggle (data-theme="dark"/"light" + localStorage bimplan_theme) — commit bb39d76
+
 ## Deployment
 - Platform: Render (Free tier)
 - Service name: bim-plan-pro
