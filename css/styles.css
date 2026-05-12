@@ -4625,4 +4625,33 @@ html[dir="rtl"] .detail-value {
     }
 }
 
+/* ===== Admin badge / panel link (Day 4 Round 3) ===== */
+.dropdown-admin-badge {
+    display: inline-block;
+    background: rgba(251, 191, 36, 0.16);
+    color: #d97706;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin: 2px 0 4px;
+    width: fit-content;
+}
+:root[data-theme="dark"] .dropdown-admin-badge {
+    background: rgba(251, 191, 36, 0.20);
+    color: #fbbf24;
+}
+.dropdown-item-admin {
+    color: #d97706 !important;
+    font-weight: 700;
+    text-decoration: none;
+}
+.dropdown-item-admin i { color: #d97706; }
+:root[data-theme="dark"] .dropdown-item-admin,
+:root[data-theme="dark"] .dropdown-item-admin i { color: #fbbf24 !important; }
+.auth-btn.is-admin {
+    box-shadow: 0 0 0 2px #fbbf24, 0 0 0 4px rgba(251, 191, 36, 0.25);
+}
+.dropdown-admin-badge.hidden,
+.dropdown-item-admin.hidden { display: none !important; }
 

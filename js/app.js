@@ -1017,6 +1017,12 @@ ${closingHTML}
             // Update dropdown info
             document.getElementById('dropdownName').textContent = user.name || '—';
             document.getElementById('dropdownEmail').textContent = user.email || '';
+            var isAdmin = user.role === 'admin';
+            var adminBadge = document.getElementById('dropdownAdminBadge');
+            var adminLink  = document.getElementById('dropdownAdminLink');
+            if (adminBadge) adminBadge.classList.toggle('hidden', !isAdmin);
+            if (adminLink)  adminLink.classList.toggle('hidden', !isAdmin);
+            authBtn.classList.toggle('is-admin', isAdmin);
             var avatarEl = document.getElementById('dropdownAvatar');
             if (user.photo) {
                 avatarEl.innerHTML = '<img src="' + user.photo + '" alt="">';

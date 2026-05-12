@@ -278,10 +278,14 @@
                             <div class="dropdown-avatar" id="dropdownAvatar"><i class="fas fa-user-circle"></i></div>
                             <div class="dropdown-info">
                                 <strong id="dropdownName">—</strong>
+                                <span class="dropdown-admin-badge hidden" id="dropdownAdminBadge">👑 <span data-i18n="admin_badge">مشرف</span></span>
                                 <span id="dropdownEmail">—</span>
                             </div>
                         </div>
                         <div class="user-dropdown-body">
+                            <a class="dropdown-item dropdown-item-admin hidden" id="dropdownAdminLink" href="/admin">
+                                <i class="fas fa-crown"></i> <span data-i18n="admin_panel_link">لوحة المشرف</span>
+                            </a>
                             <button class="dropdown-item" id="dropdownProfile">
                                 <i class="fas fa-user-edit"></i> <span data-i18n="dropdown_profile">إدارة الملف الشخصي</span>
                             </button>

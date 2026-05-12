@@ -65,6 +65,7 @@ def init_db():
             photo           TEXT    DEFAULT '',
             company_logo    TEXT    DEFAULT '',
             provider        TEXT    DEFAULT 'password',
+            role            TEXT    DEFAULT 'user',
             created_at      TEXT    DEFAULT CURRENT_TIMESTAMP
         );
 
@@ -90,6 +91,12 @@ def init_db():
         db.commit()
     except Exception:
         pass  # العمود موجود مسبقاً
+    # Migration: add role column to existing databases
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'")
+        db.commit()
+    except Exception:
+        pass
     db.commit()
     db.close()
 
@@ -152,6 +159,32 @@ def login_required(f):
     return decorated
 
 # ---------------------------------------------------------------------------
+# Decorator: تأكيد صلاحيات المشرف
+# ---------------------------------------------------------------------------
+
+def _admin_emails():
+    raw = os.environ.get('ADMIN_EMAILS', '')
+    return {e.strip().lower() for e in raw.split(',') if e.strip()}
+
+
+def _resolve_role(email: str) -> str:
+    """إرجاع 'admin' إن كان البريد ضمن ADMIN_EMAILS ، وإلا 'user'."""
+    return 'admin' if email.lower() in _admin_emails() else 'user'
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if 'user_id' not in session:
+            return jsonify({'error': 'يجب تسجيل الدخول أولاً'}), 401
+        db = get_db()
+        u = db.execute('SELECT role FROM users WHERE id = ?', (session['user_id'],)).fetchone()
+        if not u or (u['role'] or 'user') != 'admin':
+            return jsonify({'error': 'هذه الصفحة للمشرف فقط'}), 403
+        return f(*args, **kwargs)
+    return decorated
+
+# ---------------------------------------------------------------------------
 # الملفات الثابتة (HTML / CSS / JS)
 # ---------------------------------------------------------------------------
 
@@ -193,15 +226,16 @@ def register():
         return jsonify({'error': 'هذا البريد الإلكتروني مسجّل مسبقاً'}), 409
 
     pw_hash = hash_password(password)
+    role    = _resolve_role(email)
     cursor  = db.execute(
-        'INSERT INTO users (email, password_hash, name, provider) VALUES (?, ?, ?, ?)',
-        (email, pw_hash, name, 'password')
+        'INSERT INTO users (email, password_hash, name, provider, role) VALUES (?, ?, ?, ?, ?)',
+        (email, pw_hash, name, 'password', role)
     )
     db.commit()
     user_id = cursor.lastrowid
 
     session['user_id'] = user_id
-    return jsonify({'id': user_id, 'email': email, 'name': name, 'company': '', 'photo': '', 'company_logo': '', 'provider': 'password'}), 201
+    return jsonify({'id': user_id, 'email': email, 'name': name, 'company': '', 'photo': '', 'company_logo': '', 'provider': 'password', 'role': role}), 201
 
 
 @app.route('/api/auth/login', methods=['POST'])
@@ -225,6 +259,11 @@ def login():
         return jsonify({'error': 'البريد الإلكتروني أو كلمة المرور غير صحيحة'}), 401
 
     session['user_id'] = user['id']
+    # تحديث الدور ديناميكياً إن تغيّرت ADMIN_EMAILS
+    desired_role = _resolve_role(user['email'])
+    if (user['role'] or 'user') != desired_role:
+        db.execute('UPDATE users SET role=? WHERE id=?', (desired_role, user['id']))
+        db.commit()
     return jsonify({
         'id':           user['id'],
         'email':        user['email'],
@@ -232,7 +271,8 @@ def login():
         'company':      user['company'],
         'photo':        user['photo'],
         'company_logo': user['company_logo'],
-        'provider':     user['provider'] or 'password'
+        'provider':     user['provider'] or 'password',
+        'role':         desired_role
     })
 
 
@@ -257,7 +297,8 @@ def me():
         'company':      user['company'],
         'photo':        user['photo'],
         'company_logo': user['company_logo'],
-        'provider':     user['provider'] or 'password'
+        'provider':     user['provider'] or 'password',
+        'role':         user['role'] or 'user'
     })
 
 
@@ -441,25 +482,47 @@ def google_callback():
     db   = get_db()
     user = db.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
 
+    desired_role = _resolve_role(email)
     if user:
-        # تحديث الصورة والمزوّد لحساب موجود
+        # تحديث الصورة والمزوّد والدور لحساب موجود
         new_name = name if not user['name'] else user['name']
         db.execute(
-            'UPDATE users SET photo=?, name=?, provider=? WHERE id=?',
-            (photo, new_name, 'google.com', user['id'])
+            'UPDATE users SET photo=?, name=?, provider=?, role=? WHERE id=?',
+            (photo, new_name, 'google.com', desired_role, user['id'])
         )
         db.commit()
         user_id = user['id']
     else:
         cursor = db.execute(
-            'INSERT INTO users (email, password_hash, name, photo, provider) VALUES (?, ?, ?, ?, ?)',
-            (email, '', name, photo, 'google.com')
+            'INSERT INTO users (email, password_hash, name, photo, provider, role) VALUES (?, ?, ?, ?, ?, ?)',
+            (email, '', name, photo, 'google.com', desired_role)
         )
         db.commit()
         user_id = cursor.lastrowid
 
     session['user_id'] = user_id
     return redirect('/')
+
+
+# ---------------------------------------------------------------------------
+# لوحة تحكم المشرف
+# ---------------------------------------------------------------------------
+
+@app.route('/admin')
+@admin_required
+def admin_panel():
+    return send_from_directory(BASE_DIR, 'admin.html')
+
+
+@app.route('/api/admin/users', methods=['GET'])
+@admin_required
+def admin_list_users():
+    db   = get_db()
+    rows = db.execute(
+        'SELECT id, email, name, company, photo, provider, role, created_at FROM users ORDER BY created_at DESC'
+    ).fetchall()
+    users = [dict(r) for r in rows]
+    return jsonify(users)
 
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIM Plan Pro · لوحة المشرف</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #0a1628; color: #e8eaf0; min-height: 100vh; padding: 40px 24px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .title { display: flex; align-items: center; gap: 14px; }
+        .title i { color: #fbbf24; font-size: 1.8rem; }
+        .title h1 { font-size: 1.6rem; font-weight: 800; }
+        .title small { display: block; color: #8e93a3; font-size: 0.85rem; font-weight: 400; margin-top: 2px; }
+        .back-btn { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.12); padding: 10px 18px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: all 0.2s; font-size: 0.9rem; }
+        .back-btn:hover { background: rgba(255,255,255,0.12); }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 28px; }
+        .stat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 22px; }
+        .stat-card .num { font-size: 2rem; font-weight: 800; color: #fbbf24; }
+        .stat-card .lbl { font-size: 0.85rem; color: #8e93a3; margin-top: 4px; }
+        .table-wrap { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        thead { background: rgba(255,255,255,0.05); }
+        th { text-align: right; padding: 14px 18px; font-size: 0.82rem; color: #b0b5c3; font-weight: 700; letter-spacing: 0.5px; }
+        td { padding: 14px 18px; font-size: 0.92rem; border-top: 1px solid rgba(255,255,255,0.05); }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        .avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #244f8f, #152d54); display: inline-flex; align-items: center; justify-content: center; color: #fff; vertical-align: middle; margin-left: 8px; overflow: hidden; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 700; }
+        .badge-admin { background: rgba(251, 191, 36, 0.18); color: #fbbf24; }
+        .badge-user { background: rgba(176, 181, 195, 0.15); color: #b0b5c3; }
+        .badge-google { background: rgba(66, 133, 244, 0.18); color: #8ab4f8; }
+        .badge-password { background: rgba(139, 92, 246, 0.18); color: #c4b5fd; }
+        .loading, .empty, .error { text-align: center; padding: 40px; color: #8e93a3; }
+        .error { color: #fca5a5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">
+                <i class="fas fa-crown"></i>
+                <div>
+                    <h1>لوحة المشرف</h1>
+                    <small>BIM Plan Pro · إدارة المستخدمين</small>
+                </div>
+            </div>
+            <a href="/" class="back-btn"><i class="fas fa-arrow-right"></i> العودة للتطبيق</a>
+        </div>
+
+        <div class="stats" id="stats">
+            <div class="stat-card"><div class="num" id="statTotal">—</div><div class="lbl">إجمالي المستخدمين</div></div>
+            <div class="stat-card"><div class="num" id="statAdmins">—</div><div class="lbl">المشرفون</div></div>
+            <div class="stat-card"><div class="num" id="statGoogle">—</div><div class="lbl">تسجيل عبر Google</div></div>
+        </div>
+
+        <div class="table-wrap">
+            <div id="loadingBox" class="loading"><i class="fas fa-spinner fa-spin"></i> جاري تحميل البيانات...</div>
+            <table id="usersTable" style="display:none">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>المستخدم</th>
+                        <th>البريد</th>
+                        <th>الدور</th>
+                        <th>طريقة الدخول</th>
+                        <th>تاريخ التسجيل</th>
+                    </tr>
+                </thead>
+                <tbody id="usersBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function escapeHtml(s) {
+            return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+        function formatDate(s) {
+            try { return new Date(s).toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric' }); }
+            catch (e) { return s || '—'; }
+        }
+        async function loadUsers() {
+            try {
+                const res = await fetch('/api/admin/users', { credentials: 'same-origin' });
+                if (res.status === 401) { window.location.href = '/'; return; }
+                if (res.status === 403) {
+                    document.getElementById('loadingBox').className = 'error';
+                    document.getElementById('loadingBox').innerHTML = '<i class="fas fa-lock"></i> هذه الصفحة للمشرف فقط';
+                    return;
+                }
+                const users = await res.json();
+                renderUsers(users);
+            } catch (e) {
+                document.getElementById('loadingBox').className = 'error';
+                document.getElementById('loadingBox').innerHTML = '<i class="fas fa-circle-exclamation"></i> تعذّر تحميل البيانات';
+            }
+        }
+        function renderUsers(users) {
+            document.getElementById('loadingBox').style.display = 'none';
+            document.getElementById('usersTable').style.display = '';
+            document.getElementById('statTotal').textContent = users.length;
+            document.getElementById('statAdmins').textContent = users.filter(u => u.role === 'admin').length;
+            document.getElementById('statGoogle').textContent = users.filter(u => u.provider === 'google.com').length;
+            const body = document.getElementById('usersBody');
+            if (!users.length) { body.innerHTML = '<tr><td colspan="6" class="empty">لا يوجد مستخدمون بعد</td></tr>'; return; }
+            body.innerHTML = users.map((u, i) => {
+                const avatar = u.photo
+                    ? `<span class="avatar"><img src="${escapeHtml(u.photo)}" alt=""></span>`
+                    : `<span class="avatar"><i class="fas fa-user"></i></span>`;
+                const roleBadge = u.role === 'admin'
+                    ? '<span class="badge badge-admin">👑 مشرف</span>'
+                    : '<span class="badge badge-user">مستخدم</span>';
+                const provBadge = u.provider === 'google.com'
+                    ? '<span class="badge badge-google"><i class="fab fa-google"></i> Google</span>'
+                    : '<span class="badge badge-password">كلمة مرور</span>';
+                return `<tr>
+                    <td>${i + 1}</td>
+                    <td>${avatar}<strong>${escapeHtml(u.name || '—')}</strong></td>
+                    <td style="direction:ltr;text-align:right">${escapeHtml(u.email)}</td>
+                    <td>${roleBadge}</td>
+                    <td>${provBadge}</td>
+                    <td>${formatDate(u.created_at)}</td>
+                </tr>`;
+            }).join('');
+        }
+        loadUsers();
+    </script>
+</body>
+</html>

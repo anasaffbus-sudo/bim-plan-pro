@@ -76,6 +76,8 @@ const I18n = (function () {
             // Dropdown
             dropdown_profile: 'إدارة الملف الشخصي',
             dropdown_signout: 'تسجيل الخروج',
+            admin_badge: 'مشرف',
+            admin_panel_link: 'لوحة المشرف',
 
             // ===== Wizard =====
             wizard_title: 'إنشاء خطة تنفيذ BIM',
@@ -718,6 +720,8 @@ const I18n = (function () {
             // Dropdown
             dropdown_profile: 'Manage Profile',
             dropdown_signout: 'Sign Out',
+            admin_badge: 'Admin',
+            admin_panel_link: 'Admin Panel',
 
             // ===== Wizard =====
             wizard_title: 'Create BIM Execution Plan',
