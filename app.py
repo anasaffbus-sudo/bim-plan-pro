@@ -21,6 +21,22 @@ from authlib.integrations.flask_client import OAuth
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE = os.path.join(BASE_DIR, 'bimplan.db')
 
+# ---------------------------------------------------------------------------
+# تحديد نوع قاعدة البيانات: Postgres على Render / SQLite محلياً
+# ---------------------------------------------------------------------------
+_DATABASE_URL = os.environ.get('DATABASE_URL', '').strip()
+# Render أحياناً يستخدم postgres:// — psycopg2 يحتاج postgresql://
+if _DATABASE_URL.startswith('postgres://'):
+    _DATABASE_URL = 'postgresql://' + _DATABASE_URL[len('postgres://'):]
+IS_POSTGRES = bool(_DATABASE_URL)
+
+if IS_POSTGRES:
+    import psycopg2
+    import psycopg2.extras
+    DB_IntegrityError = psycopg2.IntegrityError
+else:
+    DB_IntegrityError = sqlite3.IntegrityError
+
 app = Flask(__name__, static_folder=BASE_DIR, static_url_path='')
 
 # مفتاح الجلسة — ثابت حتى لا تنتهي جلسات المستخدمين عند إعادة تشغيل الخادم
@@ -33,15 +49,107 @@ app.config['SESSION_COOKIE_SECURE'] = os.environ.get('FLASK_ENV') == 'production
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # ---------------------------------------------------------------------------
-# قاعدة البيانات (SQLite)
+# قاعدة البيانات — طبقة موحّدة (Postgres / SQLite)
 # ---------------------------------------------------------------------------
+
+class _Result:
+    """نتيجة استعلام موحّدة لكلا المحركين."""
+    def __init__(self, cursor, lastrowid=None):
+        self._cursor = cursor
+        self.lastrowid = lastrowid
+        self.rowcount = cursor.rowcount if cursor is not None else 0
+
+    def fetchone(self):
+        return self._cursor.fetchone() if self._cursor is not None else None
+
+    def fetchall(self):
+        return self._cursor.fetchall() if self._cursor is not None else []
+
+
+class _SQLiteConn:
+    """غلاف اتصال SQLite يوحّد الواجهة مع Postgres."""
+    def __init__(self, conn):
+        conn.row_factory = sqlite3.Row
+        conn.execute('PRAGMA foreign_keys = ON')
+        self._conn = conn
+
+    def execute(self, sql, params=()):
+        cur = self._conn.execute(sql, params)
+        return _Result(cur, lastrowid=cur.lastrowid)
+
+    def insert_returning_id(self, sql, params=()):
+        cur = self._conn.execute(sql, params)
+        return cur.lastrowid
+
+    def executescript(self, sql):
+        self._conn.executescript(sql)
+
+    def commit(self):
+        self._conn.commit()
+
+    def rollback(self):
+        self._conn.rollback()
+
+    def close(self):
+        self._conn.close()
+
+
+class _PostgresConn:
+    """غلاف اتصال Postgres يحاكي واجهة SQLite (؟ → %s، fetchone/fetchall، lastrowid)."""
+    def __init__(self, conn):
+        self._conn = conn
+
+    @staticmethod
+    def _rewrite(sql):
+        # تحويل علامات الاستفهام إلى %s دون لمس النصوص المقتبسة (المشروع لا يستخدم ? داخل نصوص)
+        return sql.replace('?', '%s')
+
+    def execute(self, sql, params=()):
+        cur = self._conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cur.execute(self._rewrite(sql), params)
+        # إذا كان الاستعلام يُرجع صفوفاً (SELECT أو RETURNING) — اترك الـcursor مفتوحاً
+        if cur.description is not None:
+            return _Result(cur)
+        result = _Result(None)
+        result.rowcount = cur.rowcount
+        cur.close()
+        return result
+
+    def insert_returning_id(self, sql, params=()):
+        sql_pg = self._rewrite(sql).rstrip().rstrip(';')
+        if 'RETURNING' not in sql_pg.upper():
+            sql_pg += ' RETURNING id'
+        cur = self._conn.cursor()
+        cur.execute(sql_pg, params)
+        new_id = cur.fetchone()[0]
+        cur.close()
+        return new_id
+
+    def executescript(self, sql):
+        cur = self._conn.cursor()
+        cur.execute(sql)
+        cur.close()
+
+    def commit(self):
+        self._conn.commit()
+
+    def rollback(self):
+        self._conn.rollback()
+
+    def close(self):
+        self._conn.close()
+
+
+def _open_connection():
+    if IS_POSTGRES:
+        return _PostgresConn(psycopg2.connect(_DATABASE_URL))
+    return _SQLiteConn(sqlite3.connect(DATABASE))
+
 
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
-        db.row_factory = sqlite3.Row
-        db.execute('PRAGMA foreign_keys = ON')
+        db = g._database = _open_connection()
     return db
 
 
@@ -52,70 +160,114 @@ def close_connection(exception):
         db.close()
 
 
+# DDL مختلف بين المحرّكين
+_SCHEMA_SQLITE = '''
+    CREATE TABLE IF NOT EXISTS users (
+        id              INTEGER PRIMARY KEY AUTOINCREMENT,
+        email           TEXT    UNIQUE NOT NULL,
+        password_hash   TEXT    DEFAULT '',
+        name            TEXT    DEFAULT '',
+        company         TEXT    DEFAULT '',
+        photo           TEXT    DEFAULT '',
+        company_logo    TEXT    DEFAULT '',
+        provider        TEXT    DEFAULT 'password',
+        role            TEXT    DEFAULT 'user',
+        plan            TEXT    DEFAULT 'starter',
+        created_at      TEXT    DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS projects (
+        id          TEXT    PRIMARY KEY,
+        user_id     INTEGER NOT NULL,
+        data        TEXT    NOT NULL,
+        status      TEXT    DEFAULT 'draft',
+        created_at  TEXT    NOT NULL,
+        updated_at  TEXT    NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+    CREATE TABLE IF NOT EXISTS settings (
+        user_id     INTEGER PRIMARY KEY,
+        data        TEXT    NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+    CREATE TABLE IF NOT EXISTS team_members (
+        id          INTEGER PRIMARY KEY AUTOINCREMENT,
+        owner_id    INTEGER NOT NULL,
+        email       TEXT    NOT NULL,
+        name        TEXT    DEFAULT '',
+        invited_at  TEXT    DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(owner_id, email),
+        FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+'''
+
+_SCHEMA_POSTGRES = '''
+    CREATE TABLE IF NOT EXISTS users (
+        id              SERIAL  PRIMARY KEY,
+        email           TEXT    UNIQUE NOT NULL,
+        password_hash   TEXT    DEFAULT '',
+        name            TEXT    DEFAULT '',
+        company         TEXT    DEFAULT '',
+        photo           TEXT    DEFAULT '',
+        company_logo    TEXT    DEFAULT '',
+        provider        TEXT    DEFAULT 'password',
+        role            TEXT    DEFAULT 'user',
+        plan            TEXT    DEFAULT 'starter',
+        created_at      TEXT    DEFAULT (to_char(now(), 'YYYY-MM-DD"T"HH24:MI:SS.US'))
+    );
+    CREATE TABLE IF NOT EXISTS projects (
+        id          TEXT    PRIMARY KEY,
+        user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        data        TEXT    NOT NULL,
+        status      TEXT    DEFAULT 'draft',
+        created_at  TEXT    NOT NULL,
+        updated_at  TEXT    NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS settings (
+        user_id     INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+        data        TEXT    NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS team_members (
+        id          SERIAL  PRIMARY KEY,
+        owner_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        email       TEXT    NOT NULL,
+        name        TEXT    DEFAULT '',
+        invited_at  TEXT    DEFAULT (to_char(now(), 'YYYY-MM-DD"T"HH24:MI:SS.US')),
+        UNIQUE(owner_id, email)
+    );
+'''
+
+
 def init_db():
     """إنشاء جداول قاعدة البيانات إن لم تكن موجودة."""
-    db = sqlite3.connect(DATABASE)
-    db.executescript('''
-        CREATE TABLE IF NOT EXISTS users (
-            id              INTEGER PRIMARY KEY AUTOINCREMENT,
-            email           TEXT    UNIQUE NOT NULL,
-            password_hash   TEXT    DEFAULT '',
-            name            TEXT    DEFAULT '',
-            company         TEXT    DEFAULT '',
-            photo           TEXT    DEFAULT '',
-            company_logo    TEXT    DEFAULT '',
-            provider        TEXT    DEFAULT 'password',
-            role            TEXT    DEFAULT 'user',
-            plan            TEXT    DEFAULT 'starter',
-            created_at      TEXT    DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE TABLE IF NOT EXISTS projects (
-            id          TEXT    PRIMARY KEY,
-            user_id     INTEGER NOT NULL,
-            data        TEXT    NOT NULL,
-            status      TEXT    DEFAULT 'draft',
-            created_at  TEXT    NOT NULL,
-            updated_at  TEXT    NOT NULL,
-            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        );
-
-        CREATE TABLE IF NOT EXISTS settings (
-            user_id     INTEGER PRIMARY KEY,
-            data        TEXT    NOT NULL,
-            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        );
-
-        CREATE TABLE IF NOT EXISTS team_members (
-            id          INTEGER PRIMARY KEY AUTOINCREMENT,
-            owner_id    INTEGER NOT NULL,
-            email       TEXT    NOT NULL,
-            name        TEXT    DEFAULT '',
-            invited_at  TEXT    DEFAULT CURRENT_TIMESTAMP,
-            UNIQUE(owner_id, email),
-            FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
-        );
-    ''')
-    # Migration: add provider column to existing databases
-    try:
-        db.execute("ALTER TABLE users ADD COLUMN provider TEXT DEFAULT 'password'")
-        db.commit()
-    except Exception:
-        pass  # العمود موجود مسبقاً
-    # Migration: add role column to existing databases
-    try:
-        db.execute("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'")
-        db.commit()
-    except Exception:
-        pass
-    # Migration: add plan column to existing databases
-    try:
-        db.execute("ALTER TABLE users ADD COLUMN plan TEXT DEFAULT 'starter'")
-        db.commit()
-    except Exception:
-        pass
-    db.commit()
-    db.close()
+    if IS_POSTGRES:
+        conn = psycopg2.connect(_DATABASE_URL)
+        cur = conn.cursor()
+        cur.execute(_SCHEMA_POSTGRES)
+        # Migrations (تعمل بأمان حتى لو كانت الأعمدة موجودة)
+        for col, ddl in [
+            ('provider', "TEXT DEFAULT 'password'"),
+            ('role',     "TEXT DEFAULT 'user'"),
+            ('plan',     "TEXT DEFAULT 'starter'"),
+        ]:
+            cur.execute(f"ALTER TABLE users ADD COLUMN IF NOT EXISTS {col} {ddl}")
+        conn.commit()
+        cur.close()
+        conn.close()
+    else:
+        conn = sqlite3.connect(DATABASE)
+        conn.executescript(_SCHEMA_SQLITE)
+        for col, ddl in [
+            ('provider', "TEXT DEFAULT 'password'"),
+            ('role',     "TEXT DEFAULT 'user'"),
+            ('plan',     "TEXT DEFAULT 'starter'"),
+        ]:
+            try:
+                conn.execute(f"ALTER TABLE users ADD COLUMN {col} {ddl}")
+                conn.commit()
+            except Exception:
+                pass  # العمود موجود مسبقاً
+        conn.commit()
+        conn.close()
 
 
 # تهيئة قاعدة البيانات عند بدء التطبيق
@@ -244,12 +396,11 @@ def register():
 
     pw_hash = hash_password(password)
     role    = _resolve_role(email)
-    cursor  = db.execute(
+    user_id = db.insert_returning_id(
         'INSERT INTO users (email, password_hash, name, provider, role) VALUES (?, ?, ?, ?, ?)',
         (email, pw_hash, name, 'password', role)
     )
     db.commit()
-    user_id = cursor.lastrowid
 
     session['user_id'] = user_id
     return jsonify({'id': user_id, 'email': email, 'name': name, 'company': '', 'photo': '', 'company_logo': '', 'provider': 'password', 'role': role}), 201
@@ -512,12 +663,11 @@ def google_callback():
         db.commit()
         user_id = user['id']
     else:
-        cursor = db.execute(
+        user_id = db.insert_returning_id(
             'INSERT INTO users (email, password_hash, name, photo, provider, role) VALUES (?, ?, ?, ?, ?, ?)',
             (email, '', name, photo, 'google.com', desired_role)
         )
         db.commit()
-        user_id = cursor.lastrowid
 
     session['user_id'] = user_id
     return redirect('/')
@@ -641,7 +791,8 @@ def add_team_member():
             (session['user_id'], email, name)
         )
         db.commit()
-    except sqlite3.IntegrityError:
+    except DB_IntegrityError:
+        db.rollback()
         return jsonify({'error': 'هذا العضو مُضاف مسبقاً'}), 400
     return jsonify({'ok': True}), 201
 
